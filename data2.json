@@ -1,0 +1,16 @@
+{
+    "alt_sizes": -3,
+    "preview_sizes":-4,
+    "dashboard_param": {
+        "limit": 20,
+        "offset": 0
+    },
+    "posts_param": {
+        "limit": 5,
+        "offset": 0
+    },
+    "proxies": {
+        "http": "127.0.0.1:61274",
+        "https": "127.0.0.1:61274"
+    }
+}

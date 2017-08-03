@@ -1,0 +1,142 @@
+@import "common.scs";
+widget#widget{
+    position: relative;
+}
+aside{
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 36dip;
+    padding-top: 32dip;
+    padding-bottom: 32dip;
+    background: @BGCOLOR-WHITE;
+    overflow-y: hidden;
+}
+aside2:hover{
+    width:100dip;
+}
+aside2:hover #sites-nav{
+    padding: 0.5em;
+    /*border-spacing:0.5em;*/
+}
+main{
+    size: *;
+    margin-left: 40dip;
+}
+#sites-nav {
+    display:block;
+    width: *;
+    height: *;
+    flow:vertical;
+    padding: 0.4em;
+    /*padding-right: 0.4em;*/
+    border-spacing:0.5em;
+    /*background: gold;*/
+    border-right: 1px @BORDERCOLOR solid;
+}
+#sites-nav label{
+    display:block;
+    box-shadow: 1px 2px 5px -1px rgba(0, 0, 0, .3);
+    width: *;
+    height: width(100%);
+    border-radius: 5dip;
+    overflow: hidden;
+}
+
+#sites-nav label:current{
+    height: width(200%);
+}
+
+#sites-panel{
+    flow: stack;
+    overflow: hidden;
+    size: *;
+    display:block;
+    prototype: Tabs url("../tis/tabs.tis");
+}
+#sites-panel > panel{
+    size: *;
+    display:block;
+    visibility: hidden;
+    background: @BGCOLOR-WHITE;
+}
+#sites-panel > panel:current {
+    z-index: 1;
+    visibility: visible;
+}
+#sites-panel > panel[sliding=left]
+/* from left to right */
+{
+    opacity: 0;
+    transform: translate(-100%, 0);
+}
+#sites-panel > panel[sliding=right]
+/* from right to left*/
+{
+    opacity: 0;
+    transform: translate(100%, 0);
+}
+#sites-panel > panel[sliding=run] {
+    opacity: 1.0;
+    transform: translate(0%, 0);
+    transition: transform(cubic-out, 0.5s, none) opacity(linear, 0.5s, none);
+}
+
+#sites-panel > panel:animating {
+    z-index: 2;
+    visibility: visible;
+}
+#tumblr{
+    position: relative;
+}
+.tumblr-homepage{
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    bottom: 0;
+    /*background: gold;*/
+    overflow: hidden;
+}
+.tumblr-homepage-collapsed{
+    width: 0;
+}
+#ul {
+    prototype: UlCtrl url("../tis/ulctrl.tis");
+    flow: horizontal-wrap;
+    border-spacing: 10dip;
+    size: *;
+    overflow: hidden;
+    /*overflow-y: scroll-indicator;*/
+    overflow-y: scroll;
+    /*overflow-y: scroll scroll-manner(wheel-animation:false, wheel-step:@list-h);*/
+    /*overflow-y: scroll scroll-manner(wheel-animation:false);*/
+
+    padding: 5dip;
+    background: @light_gray;
+}
+
+#ul li {
+    /*prototype: loadImageToLi url("loadimagetoli.tis");*/
+    /*prototype: loadImageToLi;*/
+    /*aspect: loadImageToLi url("loadimagetoli.tis");*/
+    width: 270px;
+    height: 320px;
+    border-radius: 5dip;
+    /*background: gold;*/
+    /*style-set: set-background;*/
+    @LI-BACKGROUND;
+    background-color: #ffffff;
+    background-size: contain;
+    box-shadow: 1px 2px 5px -1px rgba(0, 0, 0, .3);
+    /*background-image :url(icon.png);*/
+    position: relative;
+    overflow: hidden;
+    /*cursor:url(img/magnifier.svg) 48 48;*/
+    /*cursor:url(img/cursor.png) 25 25;*/
+}
+#ul li.loading{
+    background-image: url(../img/loading.png);
+    background-size: auto;
+}

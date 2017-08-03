@@ -1,0 +1,38 @@
+class UlCtrl: Behavior {
+    var _this;
+    var isLoad = true;
+    function attached() {
+        _this = this;
+        // this.subscribe(mousewheel, Event.MOUSE, Event.MOUSE_WHEEL);
+        // this.subscribe("mousedown", onMouseDown);
+
+        this << event load-imglist (evt) {
+            while( this.scroll(#bottom) < 0 ){
+                view.loadTumblr()
+            }
+        }
+    }
+    function onScroll(evt)
+    {
+      if( evt.type == Event.SCROLL_POS ){
+
+        if ( this.scroll(#bottom) < 200) {
+            // stdout.println("down",evt.scrollPos,this.scroll(#bottom));
+            // isLoad = false;
+            view.loadTumblr()
+        }
+      }
+    };
+    // function mousewheel(evt) {
+    //     if (evt.wheelDelta < 0) {
+    //         //下滚(滚轮向内滚动，放大)
+    //         // stdout.println("down");
+    //         // view.kkk("down");
+    //         (scroll_left,scroll_top, scroll_right, scroll_bottom) = this.scroll(#rect);
+    //         stdout.println("down",scroll_bottom);
+    //     } else {
+    //         //上滚(滚轮向外滚动，缩小)
+    //         stdout.println("up");
+    //     }
+    // }
+}

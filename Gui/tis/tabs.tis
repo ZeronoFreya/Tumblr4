@@ -1,0 +1,37 @@
+﻿class Tabs:Behavior {
+  var nav,plane,index;
+	function attached() {
+        nav = $(#sites-nav);
+        plane = $(#sites-panel);
+        nav[0].state.current = true;
+        plane[0].state.current = true;
+
+        nav.on("click","label",function(){
+            index = nav.$(:root>:current).index;
+            this.state.current = true;
+            if( index < this.index ){
+                animationStart(plane[this.index],"right");
+            }else if( index > this.index ){
+                animationStart(plane[this.index],"left");
+            }
+        })
+    }
+    function animationDone(evt)
+      {
+        if(evt.reason == 0 && evt.data == #style)
+        {
+          var idx = this.index;
+          this.attributes["sliding"] = undefined;
+          this.state.current = true;
+          this.unsubscribe(animationDone);
+          return true;
+        }
+      }
+
+    function animationStart(el,direction)
+      {
+        el.attributes["sliding"] = direction; // reset to initial animation state.
+        el.post(:: this.attributes["sliding"] = "run" );    // set to final animation state - triggers animation.
+        el.subscribe(animationDone,Event.BEHAVIOR_EVENT,Event.ANIMATION);
+      }
+}

@@ -1,0 +1,53 @@
+﻿include "common.tis";
+self.ready = function() {
+    //设置窗口居中
+    setWinToCenter(1480);
+    view.windowTopmost = true;
+    // var h = $(header).box(#height, #border, #view);
+    // setMinSize( 320,197.76 );
+    // 加载或刷新deBug？
+    $(#window-debug).on("click",function(){
+        Sciter.launch( "inspector.exe" );
+        view.connectToInspector($(html));
+    });
+    // var ul = $(#ul);
+    // for(var i=0;i<100;i++){
+    //     ul.$append(<li>{i}</li>);
+    // }
+    // ul.postEvent("is-scroll");
+    $(#load-tumblr).on("click",function(){
+        $(.tumblr-homepage).@.addClass("tumblr-homepage-collapsed");
+        view.loadTumblr();
+        $(#ul).postEvent("load-imglist");
+    })
+    // $(li[imgid="163313406078[1]"]).text = "1234";
+    // $(aside).state.expanded = true;
+    // $(labels#sites-nav).on("click","label",function(){
+    //     if( this.@.hasClass("active") ){
+
+    //     }
+    // });
+}
+function appendImgLoading( html ){
+    self.$(#ul).append(html);
+}
+function setImgId( id, i ){
+    // stdout.println(id, i);
+    var li = $(li.loading[imgid="{i}"]);
+    if(li){
+        li.@#imgid = id;
+    }
+    // li.@#imgid = id;
+    // li.@.removeClass("loading");
+}
+function setImgBg( id, path ){
+    // stdout.println(id, path);
+    var li = $(li[imgid="{id}"]);
+    // stdout.println(li);
+    if(li){
+        li.text = id;
+        li.post( ::this.style#background-image = "url(" + path + ")" );
+        li.@.removeClass("loading");
+    }
+
+}

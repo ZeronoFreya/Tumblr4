@@ -1,0 +1,19 @@
+{
+    "tumblr": {
+        "alt_sizes": -3,
+        "preview_size": -4,
+        "dashboard_param": {
+            "limit": 5,
+            "offset": 0
+        },
+        "posts_param": {
+            "limit": 5,
+            "offset": 0
+        },
+        "since_id": 26588344
+    },
+    "proxies": {
+        "http": "127.0.0.1:50175",
+        "https": "127.0.0.1:50175"
+    }
+}
