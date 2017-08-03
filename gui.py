@@ -33,7 +33,7 @@ class Frame(sciter.Window):
         # print('initTumblr')
         self.eventQ.put({
             'type_' : 'tumblr',
-            'event_' : 'getDashboards'
+            'event_' : 'initTumblr'
         })
         # self.tumblrCtrl = TumblrCtrl({
         #     'call'          : self.call_function,
