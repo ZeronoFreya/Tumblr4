@@ -17,8 +17,8 @@ self.ready = function() {
     // ul.postEvent("is-scroll");
     $(#load-tumblr).on("click",function(){
         $(.tumblr-homepage).@.addClass("tumblr-homepage-collapsed");
-        view.loadTumblr();
-        $(#ul).postEvent("load-imglist");
+        view.initTumblr();
+        //$(#ul).postEvent("load-imglist");
     })
     // $(li[imgid="163313406078[1]"]).text = "1234";
     // $(aside).state.expanded = true;
