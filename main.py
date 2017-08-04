@@ -3,33 +3,26 @@ from json import load as JLoad
 from os import path as osPath, getcwd, mkdir
 import gui
 import Controller
-from EventManager import EventManager
-from FunManager import TumblrFun
 
 
 class MainForm(object):
     """docstring for ClassName"""
-    def __init__(self, imgListQ, _GuiSendMsg, cfg, _GuiRecvMsg ):
+    def __init__(self, cfg, _GuiRecvMsg, _CtrlRecvMsg ):
         super(MainForm, self).__init__()
-        self.imgListQ = imgListQ
-        self.GuiSendMsg = _GuiSendMsg
+        # self.imgListQ = imgListQ
+        # self.GuiSendMsg = _GuiSendMsg
         self.cfg = cfg
         self.GuiRecvMsg = _GuiRecvMsg
-
-    def __initFunMap(self):
-        tumblrFun = TumblrFun( self.imgListQ, self.GuiRecvMsg, self.cfg['tumblr'], self.cfg['proxies'] )
-        return {
-            'tumblr':{
-                'initTumblr':tumblrFun.initTumblr,
-                'getDashboards':tumblrFun.getDashboards
-            }
-        }
+        # self.CtrlSendMsg = _CtrlSendMsg
+        self.CtrlRecvMsg = _CtrlRecvMsg
 
     def run_app(self):
-        Process(target = gui.run_app, args = ( self.imgListQ, self.GuiSendMsg, self.cfg, self.GuiRecvMsg )).start()
-        # Process(target = Controller.run_app, args = ( self.imgListQ, self.eventQ, self.cfg )).start()
-        funMap = self.__initFunMap()
-        return EventManager( self.GuiSendMsg, funMap ).Start()
+        print('ctrl')
+        Process(target = Controller.run_app, args = ( self.cfg, self.GuiRecvMsg, self.CtrlRecvMsg )).start()
+        print('gui')
+        Process(target = gui.run_app, args = ( self.cfg, self.GuiRecvMsg, self.CtrlRecvMsg )).start()
+
+        print('over')
 
 def initCfg():
     cfg = {"tumblr":{"alt_sizes":-3,"preview_size":-4,"dashboard_param":{"limit":5,"offset":0},"posts_param":{"limit":5,"offset":0}},"proxies":"","imgTemp":"","imgSave":""}
@@ -52,13 +45,13 @@ if __name__ == '__main__':
     duplex为False，conn1只负责接受消息，conn2只负责发送消息。
     '''
     # pipe = Pipe(duplex=False)
-    _GuiSendMsg = Queue()
+    # _GuiSendMsg = Queue()
     _GuiRecvMsg = Queue()
-    _CtrlSendMsg = Queue()
+    # _CtrlSendMsg = Queue()
     _CtrlRecvMsg = Queue()
-    imgListQ = Queue()
+    # imgListQ = Queue()
     cfg = initCfg()
 
     # eventManager = EventManager( _GuiSendMsg, funMap )
-    main = MainForm( imgListQ, _GuiSendMsg, cfg, _GuiRecvMsg )
+    main = MainForm( cfg, _GuiRecvMsg, _CtrlRecvMsg )
     main.run_app()

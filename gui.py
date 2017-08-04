@@ -16,12 +16,18 @@ def queueLoop( _GuiRecvMsg, funCall ):
                 break
             if event['type_'] == 'tumblr' and event['event_'] == 'appendImg':
                 funCall('appendImgLoading', event.get('data_', '') )
+            elif event['type_'] == 'tumblr' and event['event_'] == 'setImgId':
+                d = event.get('data_', '')
+                funCall('setImgId', d['id'], d['imgid'] )
+            elif event['type_'] == 'tumblr' and event['event_'] == 'setImgBg':
+                d = event.get('data_', '')
+                funCall('setImgBg', d['id'], d['fpath'] )
         except Exception as e:
             pass
 
 class Frame(sciter.Window):
 
-    def __init__(self, _GuiSendMsg, cfg, _GuiRecvMsg):
+    def __init__(self, cfg, _GuiRecvMsg, _CtrlRecvMsg):
         '''
             ismain=False, ispopup=False, ischild=False, resizeable=True,
             parent=None, uni_theme=False, debug=True,
@@ -30,18 +36,23 @@ class Frame(sciter.Window):
         '''
         super().__init__(ismain=True, debug=True)
         self.set_dispatch_options(enable=True, require_attribute=False)
-        self.GuiSendMsg = _GuiSendMsg
+        # self.GuiSendMsg = _GuiSendMsg
         self.GuiRecvMsg = _GuiRecvMsg
+        self.CtrlRecvMsg = _CtrlRecvMsg
         self.cfg = cfg
         Thread(target=queueLoop, args=( self.GuiRecvMsg, self.call_function )).start()
 
     def document_close(self):
         # print("close")
-        self.GuiSendMsg.put({
+        # self.GuiSendMsg.put({
+        #     'type_' : 'sys',
+        #     'event_' : 'close_app'
+        # })
+        self.GuiRecvMsg.put({
             'type_' : 'sys',
             'event_' : 'close_app'
         })
-        self.GuiRecvMsg.put({
+        self.CtrlRecvMsg.put({
             'type_' : 'sys',
             'event_' : 'close_app'
         })
@@ -50,7 +61,11 @@ class Frame(sciter.Window):
     ####################################################  Tumblr
     def initTumblr(self):
         # print('initTumblr')
-        self.GuiSendMsg.put({
+        # self.GuiSendMsg.put({
+        #     'type_' : 'tumblr',
+        #     'event_' : 'initTumblr'
+        # })
+        self.CtrlRecvMsg.put({
             'type_' : 'tumblr',
             'event_' : 'initTumblr'
         })
@@ -62,10 +77,13 @@ class Frame(sciter.Window):
         # })
         # return self.getDashboards()
 
-    # def getDashboards(self):
-    #     self.tumblrCtrl.getDashboards()
+    def getDashboards(self):
+        self.CtrlRecvMsg.put({
+            'type_' : 'tumblr',
+            'event_' : 'getDashboards'
+        })
 
-def run_app( imgListQ, _GuiSendMsg, cfg, _GuiRecvMsg ):
-    frame = Frame( _GuiSendMsg, cfg, _GuiRecvMsg )
+def run_app( cfg, _GuiRecvMsg, _CtrlRecvMsg ):
+    frame = Frame( cfg, _GuiRecvMsg, _CtrlRecvMsg )
     frame.load_file("Gui/main.html")
     frame.run_app()

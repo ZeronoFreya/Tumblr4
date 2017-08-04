@@ -1,9 +1,9 @@
 class EventManager:
-    def __init__(self, _GuiSendMsg, funMap):
+    def __init__(self, _CtrlRecvMsg, funMap):
         # 事件管理器开关
         self.__active = False
         self.handlers = ['tumblr', 'sys']
-        self.GuiSendMsg = _GuiSendMsg
+        self.CtrlRecvMsg = _CtrlRecvMsg
         self.funMap = funMap
 
     def __Run(self):
@@ -11,7 +11,7 @@ class EventManager:
         while self.__active == True:
             try:
                 # 获取事件的阻塞时间设为1秒
-                event = self.GuiSendMsg.get(timeout = 1)
+                event = self.CtrlRecvMsg.get(timeout = 1)
                 print(event['type_'], event['event_'])
                 if event['type_'] == 'sys' and event['event_'] == 'close_app':
                     self.Stop()

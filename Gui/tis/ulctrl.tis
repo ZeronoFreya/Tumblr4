@@ -8,7 +8,7 @@ class UlCtrl: Behavior {
 
         this << event load-imglist (evt) {
             while( this.scroll(#bottom) < 0 ){
-                view.loadTumblr()
+                view.getDashboards()
             }
         }
     }
@@ -19,7 +19,7 @@ class UlCtrl: Behavior {
         if ( this.scroll(#bottom) < 200) {
             // stdout.println("down",evt.scrollPos,this.scroll(#bottom));
             // isLoad = false;
-            view.loadTumblr()
+            view.getDashboards()
         }
       }
     };

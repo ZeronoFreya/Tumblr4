@@ -1,40 +1,29 @@
-class EventManager:
-    def __init__(self, _GuiSendMsg, funMap):
-        # 事件管理器开关
-        self.__active = False
-        self.handlers = ['tumblr', 'sys']
-        self.GuiSendMsg = _GuiSendMsg
-        self.funMap = funMap
 
-    def __Run(self):
-        """引擎运行"""
-        while self.__active == True:
-            try:
-                # 获取事件的阻塞时间设为1秒
-                event = self.GuiSendMsg.get(timeout = 1)
-                print(event['type_'], event['event_'])
-                if event['type_'] == 'sys' and event['event_'] == 'close_app':
-                    self.Stop()
-                    break
-                self.__EventProcess(event)
-            except Exception as e:
-                pass
+from EventManager import EventManager
+from FunManager import TumblrFun
 
-    def __EventProcess(self, event):
-        """处理事件"""
-        # 检查是否存在对该事件进行监听的处理函数
-        if event['type_'] in self.handlers:
-            self.funMap[event['type_']][event['event_']]()
+class MainForm(object):
+    def __init__(self, cfg, _GuiRecvMsg, _CtrlRecvMsg ):
+        super(MainForm, self).__init__()
+        # self.imgListQ = imgListQ
+        self.cfg = cfg
+        self.GuiRecvMsg = _GuiRecvMsg
+        # self.CtrlSendMsg = _CtrlSendMsg
+        self.CtrlRecvMsg = _CtrlRecvMsg
 
-    def Start(self):
-        """启动"""
-        # 将事件管理器设为启动
-        self.__active = True
-        self.__Run()
-    def Stop(self):
-        """停止"""
-        # 将事件管理器设为停止
-        self.__active = False
+    def __initFunMap(self):
+        tumblrFun = TumblrFun( self.cfg['tumblr'], self.GuiRecvMsg, self.cfg['proxies'], self.cfg['imgTemp'] )
+        return {
+            'tumblr':{
+                'initTumblr':tumblrFun.initTumblr,
+                'getDashboards':tumblrFun.getDashboards
+            }
+        }
 
-def run_app( imgListQ, eventQ, cfg ):
-    EventManager().Start()
+    def run_app(self):
+        funMap = self.__initFunMap()
+        return EventManager( self.CtrlRecvMsg, funMap ).Start()
+
+def run_app( cfg, _GuiRecvMsg, _CtrlRecvMsg ):
+    main = MainForm( cfg, _GuiRecvMsg, _CtrlRecvMsg )
+    main.run_app()
