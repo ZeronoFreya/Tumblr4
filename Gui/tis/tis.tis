@@ -29,6 +29,7 @@ self.ready = function() {
     // });
 }
 function appendImgLoading( html ){
+    if (html=="") return;
     self.$(#ul).append(html);
 }
 function setImgId( id, i ){

@@ -35,5 +35,6 @@ class EventManager:
         """停止"""
         # 将事件管理器设为停止
         self.__active = False
-        # 等待事件处理线程退出
-        # self.__thread.join()
+
+def run_app( imgListQ, eventQ, cfg ):
+    EventManager().Start()
