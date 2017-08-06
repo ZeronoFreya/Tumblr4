@@ -16,7 +16,8 @@ class MainForm(object):
         return {
             'tumblr':{
                 'initTumblr':tumblrFun.initTumblr,
-                'getDashboards':tumblrFun.getDashboards
+                'getDashboards':tumblrFun.getDashboards,
+                'getPreviewSize':tumblrFun.getPreviewSize
             }
         }
 

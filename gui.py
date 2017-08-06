@@ -18,10 +18,16 @@ def queueLoop( _GuiRecvMsg, funCall ):
                 funCall('appendImgLoading', event.get('data_', '') )
             elif event['type_'] == 'tumblr' and event['event_'] == 'setImgId':
                 d = event.get('data_', '')
-                funCall('setImgId', d['id'], d['imgid'] )
+                if d:
+                    funCall('setImgId', d['id'], d['imgid'], d['preview'] )
             elif event['type_'] == 'tumblr' and event['event_'] == 'setImgBg':
                 d = event.get('data_', '')
-                funCall('setImgBg', d['id'], d['fpath'] )
+                if d:
+                    funCall('setImgBg', d['id'], d['fpath'] )
+            elif event['type_'] == 'tumblr' and event['event_'] == 'setPreview':
+                d = event.get('data_', '')
+                if d:
+                    funCall('setPreview', d['id'], d['fpath'] )
         except Exception as e:
             pass
 
@@ -81,6 +87,15 @@ class Frame(sciter.Window):
         self.CtrlRecvMsg.put({
             'type_' : 'tumblr',
             'event_' : 'getDashboards'
+        })
+    def getPreviewSize(self, id, preview):
+        self.CtrlRecvMsg.put({
+            'type_' : 'tumblr',
+            'event_' : 'getPreviewSize',
+            'data_' : {
+                'id': str(id).strip('"'),
+                'preview_size' : str(preview).strip('"')
+            }
         })
 
 def run_app( cfg, _GuiRecvMsg, _CtrlRecvMsg ):

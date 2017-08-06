@@ -24,7 +24,7 @@ class EventManager:
         """处理事件"""
         # 检查是否存在对该事件进行监听的处理函数
         if event['type_'] in self.handlers:
-            self.funMap[event['type_']][event['event_']]()
+            self.funMap[event['type_']][event['event_']]( event.get('data_',None) )
 
     def Start(self):
         """启动"""

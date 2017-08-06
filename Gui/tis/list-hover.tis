@@ -1,0 +1,33 @@
+class listHover: Behavior {
+    var _this;
+    var panelW, panelH;
+    function attached() {
+        // this.subscribe(mouseEventMonitor, "li", Event.MOUSE);
+        this.on("mouseenter", function(){
+            _this.@.addClass("hover");
+        });
+        this.on("mouseleave", function(){
+            _this.@.removeClass("hover");
+        });
+        _this = this;
+        (panelW, panelH) = $(#sites-panel).box(#dimension, #border, #view);
+    }
+    // function _onMouse(evt){
+    //     switch(evt.type) {
+    //         case Event.MOUSE_ENTER | Event.SINKING: showPreview(true); break;
+    //         case Event.MOUSE_LEAVE | Event.SINKING: showPreview(false); break;
+    //     }
+    // }
+    // function showPreview(flag){
+    //     // var (w,h) = _this.$(img).box(#dimension, #border, #view);
+    //     // stdout.println(panelW, panelH,w,h);
+    //     if (flag) {
+    //         stdout.println("mouseenter");
+    //         _this.@.addClass("hover");
+    //         stdout.println(_this.$(img).@#src);
+    //     }else{
+    //         stdout.println("mouseout");
+    //         _this.@.removeClass("hover");
+    //     }
+    // }
+}

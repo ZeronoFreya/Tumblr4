@@ -102,7 +102,11 @@ main{
 .tumblr-homepage-collapsed{
     width: 0;
 }
-#ul {
+#tumblr .main{
+    size:*;
+    flow:horizontal;
+}
+#tumblr .view {
     prototype: UlCtrl url("../tis/ulctrl.tis");
     flow: horizontal-wrap;
     border-spacing: 10dip;
@@ -116,8 +120,47 @@ main{
     padding: 5dip;
     background: @light_gray;
 }
-
-#ul li {
+#tumblr .list{
+    /*prototype: listHover url("../tis/list-hover.tis");*/
+    width: 80dip;
+    height: *;
+    border-left: 1px @BORDERCOLOR solid;
+    padding: 0.8em;
+    border-spacing:0.8em;
+}
+#tumblr .list li{
+    prototype: listHover url("../tis/list-hover.tis");
+    width: *;
+    height: width(100%);
+    border-radius: 5dip;
+    /*overflow: hidden;*/
+    @LI-BACKGROUND;
+    box-shadow: 1px 2px 5px -1px rgba(0, 0, 0, .3);
+    background-size: contain;
+    background-color: #ffffff;
+    position: relative;
+    /*click!: self.showPreview(true);*/
+    /*hover-on!: self:value=1;*/
+}
+#tumblr .list li .li-popup{
+    position: absolute;
+    left: -0.8em;
+    transform: translate(-50%,-50%) scale(0,0);
+    top: 0;
+    width: auto;
+    overflow: hidden;
+    border-radius: 50% 5% 50% 50%;
+    box-shadow: inset 1px 2px 5px -1px rgba(0, 0, 0, .3);
+}
+#tumblr .list li.hover .li-popup{
+    transform: translate(-100%,0) scale(1,1);
+    transition: transform(cubic-out,0.2s);
+}
+#tumblr .list li.loading{
+    foreground:rgba(250,250,250,.6) url(../img/loading.png) no-repeat center center;
+    foreground-size: auto;
+}
+#tumblr .view li {
     /*prototype: loadImageToLi url("loadimagetoli.tis");*/
     /*prototype: loadImageToLi;*/
     /*aspect: loadImageToLi url("loadimagetoli.tis");*/
@@ -136,7 +179,22 @@ main{
     /*cursor:url(img/magnifier.svg) 48 48;*/
     /*cursor:url(img/cursor.png) 25 25;*/
 }
-#ul li.loading{
+
+#tumblr .view li.loading{
     background-image: url(../img/loading.png);
     background-size: auto;
+}
+#tumblr .li-footer{
+    opacity: 0;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 20dip;
+    background: linear-gradient(top, rgba(36,38,38,0), rgba(36,38,38,.75));
+}
+
+#tumblr .view li:hover .li-footer{
+    opacity: 1;
+    transition: opacity(cubic-out,0.2s);
 }

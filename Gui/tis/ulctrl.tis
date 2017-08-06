@@ -1,6 +1,7 @@
 class UlCtrl: Behavior {
     var _this;
     var isLoad = true;
+    var listTemplate = "<li.loading imgid='%s' style='background-image: url(%s)'><div.li-popup><img/></div></li>";
     function attached() {
         _this = this;
         // this.subscribe(mousewheel, Event.MOUSE, Event.MOUSE_WHEEL);
@@ -11,18 +12,28 @@ class UlCtrl: Behavior {
                 view.getDashboards()
             }
         }
+        this.on("click","li",function(){
+            var list = $(#tumblr .list);
+            if ( list.$(li[imgid="{this.@#imgid}"]) ) return;
+            list.append(String.printf(
+                listTemplate,
+                this.@#imgid,
+                this.style#background-image
+            ));
+            return view.getPreviewSize( this.@#imgid, this.@#preview );
+        })
     }
-    function onScroll(evt)
-    {
-      if( evt.type == Event.SCROLL_POS ){
+    // function onScroll(evt)
+    // {
+    //   if( evt.type == Event.SCROLL_POS ){
 
-        if ( this.scroll(#bottom) < 200) {
-            // stdout.println("down",evt.scrollPos,this.scroll(#bottom));
-            // isLoad = false;
-            view.getDashboards()
-        }
-      }
-    };
+    //     if ( this.scroll(#bottom) < 200) {
+    //         // stdout.println("down",evt.scrollPos,this.scroll(#bottom));
+    //         // isLoad = false;
+    //         view.getDashboards()
+    //     }
+    //   }
+    // };
     // function mousewheel(evt) {
     //     if (evt.wheelDelta < 0) {
     //         //下滚(滚轮向内滚动，放大)

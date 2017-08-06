@@ -15,9 +15,15 @@ self.ready = function() {
     //     ul.$append(<li>{i}</li>);
     // }
     // ul.postEvent("is-scroll");
-    $(#load-tumblr).on("click",function(){
-        $(.tumblr-homepage).@.addClass("tumblr-homepage-collapsed");
-        view.initTumblr();
+
+    // $(#load-tumblr).on("click",function(){
+    //     $(.tumblr-homepage).@.addClass("tumblr-homepage-collapsed");
+    //     view.initTumblr();
+    //     // $(#ul).postEvent("load-imglist");
+    // })
+    
+    $(#window-menu).on("click",function(){
+        view.getDashboards();
         // $(#ul).postEvent("load-imglist");
     })
     // $(li[imgid="163313406078[1]"]).text = "1234";
@@ -30,13 +36,14 @@ self.ready = function() {
 }
 function appendImgLoading( html ){
     if (html=="") return;
-    self.$(#ul).append(html);
+    self.$(#tumblr .view).append(html);
 }
-function setImgId( id, i ){
+function setImgId( id, i, p ){
     // stdout.println(id, i);
     var li = $(li.loading[imgid="{i}"]);
     if(li){
         li.@#imgid = id;
+        li.@#preview = p;
         li.text = id;
     }
     // li.@#imgid = id;
@@ -51,5 +58,12 @@ function setImgBg( id, path ){
         li.post( ::this.style#background-image = "url(" + path + ")" );
         li.@.removeClass("loading");
     }
-
+}
+function setPreview( id, path ){
+    stdout.println(id, path);
+    var li = $(#tumblr .list li[imgid="{id}"]);
+    if (li) {
+        li.$(img).post(::this.@#src = path);
+        li.@.removeClass("loading");
+    }
 }
