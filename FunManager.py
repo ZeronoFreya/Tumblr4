@@ -171,8 +171,8 @@ class TumblrFun:
         #     raise 'not dashboard'
         #     return
         try:
-            dashboard = self.tumblr.dashboard( p )
-            # dashboard = self.tumblr.posts('kuvshinov-ilya.tumblr.com', None, p)
+            # dashboard = self.tumblr.dashboard( p )
+            dashboard = self.tumblr.posts('kuvshinov-ilya.tumblr.com', None, p)
             # # print('dashboard',dashboard)
         except Exception as e:
             raise e

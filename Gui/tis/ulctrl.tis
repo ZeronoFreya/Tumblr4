@@ -1,7 +1,7 @@
 class UlCtrl: Behavior {
     var _this;
     var isLoad = true;
-    var listTemplate = "<li.loading imgid='%s' style='background-image: url(%s)'><div.li-popup><img/></div></li>";
+    var listTemplate = "<li.loading imgid='%s' style='background-image: url(%s)'><div.li-popup><div.img></div></div></li>";
     function attached() {
         _this = this;
         // this.subscribe(mousewheel, Event.MOUSE, Event.MOUSE_WHEEL);

@@ -1,8 +1,8 @@
 ﻿include "common.tis";
 self.ready = function() {
     //设置窗口居中
-    setWinToCenter(1480);
-    view.windowTopmost = true;
+    // setWinToCenter(1480);
+    // view.windowTopmost = true;
     // var h = $(header).box(#height, #border, #view);
     // setMinSize( 320,197.76 );
     // 加载或刷新deBug？
@@ -16,11 +16,11 @@ self.ready = function() {
     // }
     // ul.postEvent("is-scroll");
 
-    // $(#load-tumblr).on("click",function(){
-    //     $(.tumblr-homepage).@.addClass("tumblr-homepage-collapsed");
-    //     view.initTumblr();
-    //     // $(#ul).postEvent("load-imglist");
-    // })
+    $(#load-tumblr).on("click",function(){
+        $(.tumblr-homepage).@.addClass("tumblr-homepage-collapsed");
+        view.initTumblr();
+        // $(#ul).postEvent("load-imglist");
+    })
     
     $(#window-menu).on("click",function(){
         view.getDashboards();
@@ -60,10 +60,11 @@ function setImgBg( id, path ){
     }
 }
 function setPreview( id, path ){
-    stdout.println(id, path);
+    // stdout.println(id, path);
     var li = $(#tumblr .list li[imgid="{id}"]);
     if (li) {
-        li.$(img).post(::this.@#src = path);
+        // li.$(img).post(::this.@#src = path);
+        li.$(div.img).post( ::this.style#background-image = "url(" + path + ")" );
         li.@.removeClass("loading");
     }
 }
