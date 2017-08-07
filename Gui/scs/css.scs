@@ -164,6 +164,7 @@ main{
 }
 
 #tumblr .list li.hover .li-popup{
+    hit-margin:0.8em;
     width: 420dip;
     opacity: 1;
     /*transform: translate(-100%,0) scale(1,1);*/
@@ -171,6 +172,10 @@ main{
 }
 #tumblr .list li.loading{
     foreground:rgba(250,250,250,.6) url(../img/loading.png) no-repeat center center;
+    foreground-size: auto;
+}
+#tumblr .list li.timeout{
+    foreground:rgba(250,250,250,.6) url(../img/timeout.png) no-repeat center center;
     foreground-size: auto;
 }
 #tumblr .view li {
@@ -194,8 +199,12 @@ main{
 }
 
 #tumblr .view li.loading{
-    background-image: url(../img/loading.png);
-    background-size: auto;
+    foreground:rgba(250,250,250,.6) url(../img/loading.png) no-repeat center center;
+    foreground-size: auto;
+}
+#tumblr .view li.timeout{
+    foreground:rgba(250,250,250,.6) url(../img/timeout.png) no-repeat center center;
+    foreground-size: auto;
 }
 #tumblr .li-footer{
     opacity: 0;

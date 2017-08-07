@@ -28,6 +28,10 @@ def queueLoop( _GuiRecvMsg, funCall ):
                 d = event.get('data_', '')
                 if d:
                     funCall('setPreview', d['id'], d['fpath'] )
+            elif event['type_'] == 'tumblr' and event['event_'] == 'timeout':
+                d = event.get('data_', '')
+                if d:
+                    funCall('timeout', d['id'], d['module'] )
         except Exception as e:
             pass
 

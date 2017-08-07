@@ -68,3 +68,10 @@ function setPreview( id, path ){
         li.@.removeClass("loading");
     }
 }
+function timeout( id, module ){
+    // alert(module);
+    var li = $({module});
+    if (li) {
+        li.@.addClass("timeout");
+    }
+}

@@ -62,23 +62,34 @@ from common import gets
 #     # postMessage(f_hwnd, loadtest, 0, 0)
 #     return
 
-async def stream_download( d, proxies, _GuiRecvMsg, _GuiRecvMsgDict ):
+async def stream_download( d, proxies, _GuiRecvMsg, _GuiRecvMsgDict, _Timeout ):
     '''协程下载列表中图片'''
     print('下载',d['id'])
-    async with aiohttp.request('GET', d['http'], proxy=''.join(('http://', proxies))) as response:
-    # async with client.get( d['http'], proxy=''.join(('http://', proxies)), timeout=10 ) as response:
-        if response.status != 200:
-            print('error')
-            return
-        with open(d['fpath'], 'ab') as file:
-            while True:
-                chunk = await response.content.read(1024)
-                if not chunk:
-                    break
-                file.write(chunk)
-    # print('over',d['id'])
+    try:
+        with aiohttp.Timeout(10):
+            async with aiohttp.request( 'GET', d['http'], proxy=''.join(('http://', proxies)) ) as response:
+            # async with client.get( d['http'], proxy=''.join(('http://', proxies)), timeout=10 ) as response:
+                if response.status != 200:
+                    print('error')
+                    return
+                print('200',d['id'])
+                with open(d['fpath'], 'ab') as file:
+                    while True:
+                        chunk = await response.content.read(1024)
+                        if not chunk:
+                            break
+                        file.write(chunk)
+        _GuiRecvMsg.put(_GuiRecvMsgDict)
+    except asyncio.TimeoutError:
+        # print('Timeout',d['id'])
+        _GuiRecvMsg.put(_Timeout)
+        # _GuiRecvMsg.put({
+        #     'type_' : 'tumblr',
+        #     'event_' : 'setPreview',
+        #     'data_' : {'id':d['id'],'fpath':file_path}
+        # })
     # func()
-    _GuiRecvMsg.put(_GuiRecvMsgDict)
+    # _GuiRecvMsg.put(_Timeout)
     # print('over2',d['id'])
     # return {'id':d['id'],'fpath':d['fpath']}
 
@@ -149,12 +160,18 @@ class TumblrFun:
             'event_' : 'setPreview',
             'data_' : {'id':d['id'],'fpath':file_path}
         }
+        _Timeout = {
+            'type_' : 'tumblr',
+            'event_' : 'timeout',
+            'data_' : {'id':d['id'],'module':'"'.join(('#tumblr .list li[imgid=',d['id'],']'))}
+        }
         if not osPath.isfile(file_path):
             asyncio.run_coroutine_threadsafe(stream_download(
                 {'id': d['id'],'http': d['preview_size'],'fpath': file_path},
                 self.proxies,
                 self.GuiRecvMsg,
-                _GuiRecvMsgDict
+                _GuiRecvMsgDict,
+                _Timeout
             ), self.new_loop)
         else:
             self.GuiRecvMsg.put(_GuiRecvMsgDict)
@@ -171,11 +188,12 @@ class TumblrFun:
         #     raise 'not dashboard'
         #     return
         try:
-            # dashboard = self.tumblr.dashboard( p )
-            dashboard = self.tumblr.posts('kuvshinov-ilya.tumblr.com', None, p)
+            dashboard = self.tumblr.dashboard( p )
+            # dashboard = self.tumblr.posts('kuvshinov-ilya.tumblr.com', None, p)
             # # print('dashboard',dashboard)
         except Exception as e:
-            raise e
+            print('err dashboard')
+            return
 
         self.cfg['dashboard_param']['offset'] += p['limit']
         # # print(self.cfg)
@@ -216,6 +234,11 @@ class TumblrFun:
                 'event_' : 'setImgBg',
                 'data_' : {'id':d['id'],'fpath':file_path}
             }
+            _Timeout = {
+                'type_' : 'tumblr',
+                'event_' : 'timeout',
+                'data_' : {'id':d['id'],'module':'"'.join(('#tumblr .view li[imgid=',d['id'],']'))}
+            }
             if not osPath.isfile(file_path):
                 # # print('准备下载',d['id'])
                 # imgDict.append({
@@ -233,7 +256,8 @@ class TumblrFun:
                     {'id': d['id'],'http': d['alt_sizes'],'fpath': file_path},
                     self.proxies,
                     self.GuiRecvMsg,
-                    _GuiRecvMsgDict
+                    _GuiRecvMsgDict,
+                    _Timeout
                 ), self.new_loop)
                 # task.add_done_callback(callback)
             else:
