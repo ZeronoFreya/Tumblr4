@@ -8,90 +8,35 @@ from tumblpy import Tumblpy
 from json import load as JLoad
 from common import gets
 
-# def asyncImgList( _GuiRecvMsg, imgDict, proxies ):
-#     '''协程下载列表中图片'''
-
-#     async def stream_download( d, proxies ):
-#         async with aiohttp.request('GET', d['http'], proxy=''.join(('http://', proxies))) as response:
-#         # async with client.get( d['http'], proxy=''.join(('http://', proxies)), timeout=10 ) as response:
-#             if response.status != 200:
-#                 # print('error')
-#                 return
-#             with open(d['fpath'], 'ab') as file:
-#                 while True:
-#                     chunk = await response.content.read(1024)
-#                     if not chunk:
-#                         break
-#                     file.write(chunk)
-#         return {'id':d['id'],'fpath':d['fpath']}
-
-#     # print('asyncImgList')
-#     # client = aiohttp.ClientSession()
-#     loop = asyncio.get_event_loop()
-#     # try:
-#     #     loop = asyncio.get_event_loop()
-#     #     # if self.loop.is_running():
-#     #     #     raise NotImplementedError("Cannot use aioutils in "
-#     #     #                               "asynchroneous environment")
-#     # except:
-#     #     loop = asyncio.new_event_loop()
-#     #     asyncio.set_event_loop(loop)
-#     # tasks = [stream_download(_GuiRecvMsg, d, proxies) for d in imgDict]
-#     def callback(future):
-#         _GuiRecvMsg.put({
-#             'type_' : 'tumblr',
-#             'event_' : 'setImgBg',
-#             'data_' : future.result()
-#         })
-
-#     tasks = []
-#     for d in imgDict:
-#         task = asyncio.ensure_future(stream_download(d, proxies))
-#         task.add_done_callback(callback)
-#         tasks.append(task)
-#     try:
-#         results = loop.run_until_complete( asyncio.wait(tasks) )
-#     except Exception as e:
-#         # # print('0',asyncio.Task.all_tasks())
-#         # # print('1',asyncio.gather(*asyncio.Task.all_tasks()).cancel())
-#         loop.stop()
-#         # loop.run_forever()
-#     finally:
-#         loop.close()
-#     # print('end')
-#     # postMessage(f_hwnd, loadtest, 0, 0)
-#     return
-
+# _GuiRecvMsg.put({
+#     'type_' : 'tumblr',
+#     'event_' : 'setPreview',
+#     'data_' : {'id':d['id'],'fpath':file_path}
+# })
 async def stream_download( d, proxies, _GuiRecvMsg, _GuiRecvMsgDict, _Timeout ):
     '''协程下载列表中图片'''
     print('下载',d['id'])
-    try:
-        with aiohttp.Timeout(10):
-            async with aiohttp.request( 'GET', d['http'], proxy=''.join(('http://', proxies)) ) as response:
-            # async with client.get( d['http'], proxy=''.join(('http://', proxies)), timeout=10 ) as response:
-                if response.status != 200:
-                    print('error')
-                    return
-                print('200',d['id'])
-                with open(d['fpath'], 'ab') as file:
-                    while True:
-                        chunk = await response.content.read(1024)
-                        if not chunk:
-                            break
-                        file.write(chunk)
-        _GuiRecvMsg.put(_GuiRecvMsgDict)
-    except asyncio.TimeoutError:
-        # print('Timeout',d['id'])
-        _GuiRecvMsg.put(_Timeout)
-        # _GuiRecvMsg.put({
-        #     'type_' : 'tumblr',
-        #     'event_' : 'setPreview',
-        #     'data_' : {'id':d['id'],'fpath':file_path}
-        # })
-    # func()
-    # _GuiRecvMsg.put(_Timeout)
-    # print('over2',d['id'])
-    # return {'id':d['id'],'fpath':d['fpath']}
+    for x in range(0, 3):
+        try:
+            with aiohttp.Timeout(10):
+                async with aiohttp.request( 'GET', d['http'], proxy=''.join(('http://', proxies)) ) as response:
+                # async with client.get( d['http'], proxy=''.join(('http://', proxies)), timeout=10 ) as response:
+                    if response.status != 200:
+                        print('error')
+                        return
+                    print('200',d['id'])
+                    with open(d['fpath'], 'ab') as file:
+                        while True:
+                            chunk = await response.content.read(1024)
+                            if not chunk:
+                                break
+                            file.write(chunk)
+            _GuiRecvMsg.put(_GuiRecvMsgDict)
+            return
+        except asyncio.TimeoutError:
+
+            continue
+    _GuiRecvMsg.put(_Timeout)
 
 class TumblrFun:
     """docstring for ClassName"""
@@ -188,8 +133,8 @@ class TumblrFun:
         #     raise 'not dashboard'
         #     return
         try:
-            dashboard = self.tumblr.dashboard( p )
-            # dashboard = self.tumblr.posts('kuvshinov-ilya.tumblr.com', None, p)
+            # dashboard = self.tumblr.dashboard( p )
+            dashboard = self.tumblr.posts('kuvshinov-ilya.tumblr.com', None, p)
             # # print('dashboard',dashboard)
         except Exception as e:
             print('err dashboard')

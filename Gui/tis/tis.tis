@@ -16,11 +16,11 @@ self.ready = function() {
     // }
     // ul.postEvent("is-scroll");
 
-    $(#load-tumblr).on("click",function(){
-        $(.tumblr-homepage).@.addClass("tumblr-homepage-collapsed");
-        view.initTumblr();
-        // $(#ul).postEvent("load-imglist");
-    })
+    // $(#tumblr-login).on("click",function(){
+    //     $(.tumblr-homepage).@.addClass("tumblr-homepage-collapsed");
+    //     view.initTumblr();
+    //     // $(#ul).postEvent("load-imglist");
+    // })
     
     $(#window-menu).on("click",function(){
         view.getDashboards();

@@ -1,8 +1,9 @@
 ﻿class Tabs:Behavior {
-  var nav,plane,index;
+
 	function attached() {
-        nav = $(#sites-nav);
-        plane = $(#sites-panel);
+        var nav,plane,index;
+        nav = $({this.style["-nav"]});
+        plane = this;
         nav[0].state.current = true;
         plane[0].state.current = true;
 

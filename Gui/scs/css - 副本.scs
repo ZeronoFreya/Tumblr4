@@ -104,13 +104,14 @@ main{
 .tumblr-homepage-collapsed{
     width: 0;
 }
-/*#tumblr .main{
+#tumblr .main{
     size:*;
     flow:horizontal;
     position: relative;
-}*/
-/*#tumblr-nav {
+}
+#tumblr-nav {
     position: absolute;
+    /*top: -1.6em;*/
     top: 0;
     right: 70px;
     display:block;
@@ -118,8 +119,10 @@ main{
     height: 1.6em;
     flow:horizontal;
     padding: 0.4em;
+    /*padding-right: 0.4em;*/
     border-spacing:0.5em;
     background: gold;
+    /*border-right: 1px @BORDERCOLOR solid;*/
 }
 #tumblr-nav label{
     display:block;
@@ -128,8 +131,8 @@ main{
     width: 1.6em;
     border-radius: 5dip;
     overflow: hidden;
-}*/
-/*----------------------------------*/
+}
+
 #tumblr-nav label:current{
     width: 3.2em;
 }
