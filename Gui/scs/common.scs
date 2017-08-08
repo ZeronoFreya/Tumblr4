@@ -2,7 +2,7 @@
 @const FONTCOLOR-WHITE: #fafafa;
 @const FONTCOLOR-DARK: #666666;
 @const BORDERCOLOR: #ccc;
-
+@const HEADER-HEIGHT: 28px;
 @font-face {
     font-family: exo2;
     src: url("fonts/exo2regular.ttf");

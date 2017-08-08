@@ -42,6 +42,7 @@ main{
     height: width(100%);
     border-radius: 5dip;
     overflow: hidden;
+    transition: height(cubic-out, 0.5s, none);
 }
 
 #sites-nav label:current{
@@ -61,6 +62,7 @@ main{
     display:block;
     visibility: hidden;
     background: @BGCOLOR-WHITE;
+    position: relative;
 }
 #sites-panel > panel:current {
     z-index: 1;
@@ -89,8 +91,7 @@ main{
     visibility: visible;
 }
 #tumblr{
-    position: relative;
-    z-index: 1
+    flow:horizontal;
 }
 .tumblr-homepage{
     position: absolute;
@@ -104,31 +105,32 @@ main{
 .tumblr-homepage-collapsed{
     width: 0;
 }
-/*#tumblr .main{
+#tumblr tabs.main{
     size:*;
-    flow:horizontal;
+    display: block;
     position: relative;
-}*/
-/*#tumblr-nav {
-    position: absolute;
+}
+#tumblr-nav {
+    /*position: absolute;
     top: 0;
-    right: 70px;
+    right: 70px;*/
     display:block;
-    width: 200dip;
-    height: 1.6em;
+    /*width: 200dip;*/
+    height: @HEADER-HEIGHT;
     flow:horizontal;
-    padding: 0.4em;
+    padding: 2dip;
     border-spacing:0.5em;
-    background: gold;
+    /*background: gold;*/
 }
 #tumblr-nav label{
     display:block;
-    box-shadow: 1px 2px 5px -1px rgba(0, 0, 0, .3);
-    height: *;
-    width: 1.6em;
+    box-shadow: inset 1px 1px 3px -1px rgba(0, 0, 0, .3);
+    height: 24px;
+    width: @HEADER-HEIGHT;
     border-radius: 5dip;
     overflow: hidden;
-}*/
+    transition: width(cubic-out, 0.5s, none);
+}
 /*----------------------------------*/
 #tumblr-nav label:current{
     width: 3.2em;
