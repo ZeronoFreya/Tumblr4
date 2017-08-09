@@ -7,20 +7,19 @@
 <body>
 <!-- <button#tumblr>Tumblr</button> -->
 <widget#widget>
-<aside>
+<aside#widget-aside>
     <labels#sites-nav>
-        <label>Tumblr</label>
-        <label>Y</label>
-        <label>Z</label>
+        <label panel=0>Tumblr</label>
+        <label panel=1>Y</label>
     </labels>
 </aside>
-<main>
+<main#widget-main>
     <include src="titlebar.html" />
     <panels#sites-panel>
-        <panel#tumblr>
+        <panel#tumblr panel=0>
             <tabs.main>
                 <panels#tumblr-tabs>
-                    <panel>
+                    <panel panel=0>
                         <ul.view>
                             <li imgid="163829444712[1]" style="background-image: url(d:/Project/GitHub/Tumblr4/imgTemp/163751837940[1]_250.jpg)">
                                 <footer .li-footer>
@@ -28,25 +27,38 @@
                             </li>
                         </ul>
                     </panel>
-                    <panel>
-                        X
-                    </panel>
+                    <panel panel=1>Like</panel>
+                    <panel panel=2>Kuvshinov-ilya</panel>
                 </panels>
             </tabs>
-            <ul.list>
-                <li style="background-image: url(d:/Project/GitHub/Tumblr4/imgTemp/163751837940[1]_250.jpg)">
-                        <div.li-popup>
-                            <div style="background-image: url(d:/Project/GitHub/Tumblr4/imgTemp/163751837940[1]_400.jpg)"></div>
-                        </div>
-                    </li>
-            </ul>
+            <aside#tumblr-aside>
+                <div#tumblr-user>
+                    <div#user-avatar></div>
+                    <div#user-panel>
+                        <labels#tumblr-nav>
+                            <div.tumblr-nav-group>
+                                <label panel=0>Home</label>
+                                <label panel=1>Like</label>
+                            </div>
+                            <div#tumblr-attention .tumblr-nav-group>
+                                <label panel=2>Kuvshinov-ilya</label>
+                            </div>
+                        </labels>
+                    </div>
+                </div>
+                <ul.list>
+                    <li style="background-image: url(d:/Project/GitHub/Tumblr4/imgTemp/163751837940[1]_250.jpg)">
+                            <div.li-popup>
+                                <div style="background-image: url(d:/Project/GitHub/Tumblr4/imgTemp/163751837940[1]_400.jpg)"></div>
+                            </div>
+                        </li>
+                </ul>
+            </aside>
+            <div.tumblr-homepage style="display: none;">
+                <button#tumblr-login>Login</button>
+            </div>
         </panel>
-        <panel>
-            YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY
-        </panel>
-        <panel>
-            ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ
-        </panel>
+        <panel panel=1>Y</panel>
     </panels>
     <include src="statusbar.html" />
 </main>

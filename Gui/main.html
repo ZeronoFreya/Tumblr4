@@ -7,39 +7,47 @@
 <body>
 <!-- <button#tumblr>Tumblr</button> -->
 <widget#widget>
-<aside>
+<aside#widget-aside>
     <labels#sites-nav>
-        <label>Tumblr</label>
-        <label>Y</label>
+        <label panel=0>Tumblr</label>
+        <label panel=1>Y</label>
     </labels>
 </aside>
-<main>
+<main#widget-main>
     <include src="titlebar.html" />
     <panels#sites-panel>
-        <panel#tumblr>
-            <div.main>
-                <labels#tumblr-nav>
-                    <label>Tumblr</label>
-                    <label>X</label>
-                </labels>
+        <panel#tumblr panel=0>
+            <tabs.main>
                 <panels#tumblr-tabs>
-                    <panel>
+                    <panel panel=0>
                         <ul.view></ul>
                     </panel>
-                    <panel>
-                        X
-                    </panel>
+                    <panel panel=1>Like</panel>
+                    <panel panel=2>Kuvshinov-ilya</panel>
                 </panels>
+            </tabs>
+            <aside#tumblr-aside>
+                <div#tumblr-user>
+                    <div#user-avatar></div>
+                    <div#user-panel>
+                        <labels#tumblr-nav>
+                            <div.tumblr-nav-group>
+                                <label panel=0>Home</label>
+                                <label panel=1>Like</label>
+                            </div>
+                            <div#tumblr-attention .tumblr-nav-group>
+                                <label panel=2>Kuvshinov-ilya</label>
+                            </div>
+                        </labels>
+                    </div>
+                </div>
                 <ul.list></ul>
-            </div>
+            </aside>
             <div.tumblr-homepage>
                 <button#tumblr-login>Login</button>
-                <button#load-tumblr>Kuvshinov-ilya</button>
             </div>
         </panel>
-        <panel>
-            Y
-        </panel>
+        <panel panel=1>Y</panel>
     </panels>
     <include src="statusbar.html" />
 </main>

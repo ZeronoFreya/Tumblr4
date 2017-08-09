@@ -1,38 +1,42 @@
 ﻿class Tabs:Behavior {
 
 	function attached() {
-        var nav,plane,index;
+        var nav,panels;
         nav = $({this.style["-nav"]});
-        plane = this;
-        nav[0].state.current = true;
-        plane[0].state.current = true;
+        panels = this;
+        // nav[0].state.current = true;
+        nav.$(label[panel=0]).state.current = true;
+        // panels[0].state.current = true;
+        panels.$(panel[panel=0]).state.current = true;
 
         nav.on("click","label",function(){
-            index = nav.$(:root>:current).index;
+            var current = nav.$(label:current);
+            var index = current.@#panel;
+            if (index == this.@#panel) return;
+            var el = panels.$(:root>panel[panel={this.@#panel}]);
+            // stdout.println( index, this.@#panel);
+            current.state.current = false;
             this.state.current = true;
-            if( index < this.index ){
-                animationStart(plane[this.index],"right");
-            }else if( index > this.index ){
-                animationStart(plane[this.index],"left");
+            if( index < this.@#panel ){
+                animationStart( el, "right");
+            }else if( index > this.@#panel ){
+                animationStart( el, "left");
             }
         })
     }
-    function animationDone(evt)
+    function animationDone(evt){
+      if(evt.reason == 0 && evt.data == #style)
       {
-        if(evt.reason == 0 && evt.data == #style)
-        {
-          var idx = this.index;
-          this.attributes["sliding"] = undefined;
-          this.state.current = true;
-          this.unsubscribe(animationDone);
-          return true;
-        }
+        this.attributes["sliding"] = undefined;
+        this.state.current = true;
+        this.unsubscribe(animationDone);
+        return true;
       }
+    }
 
-    function animationStart(el,direction)
-      {
-        el.attributes["sliding"] = direction; // reset to initial animation state.
-        el.post(:: this.attributes["sliding"] = "run" );    // set to final animation state - triggers animation.
-        el.subscribe(animationDone,Event.BEHAVIOR_EVENT,Event.ANIMATION);
-      }
+    function animationStart(el, direction){
+      el.attributes["sliding"] = direction; // reset to initial animation state.
+      el.post(:: this.attributes["sliding"] = "run" );    // set to final animation state - triggers animation.
+      el.subscribe(animationDone,Event.BEHAVIOR_EVENT,Event.ANIMATION);
+    }
 }

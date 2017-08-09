@@ -20,7 +20,7 @@ header>window-button {
     font-size: 14dip;
     line-height: @HEADER-HEIGHT;
     behavior: clickable;
-    padding: 0 10dip;
+    padding: 0 10dip 0 10dip;
     border-bottom: 1px #cccccc solid;
 }
 #caption-expand{
@@ -34,12 +34,7 @@ header>window-button {
 </style>
 <header>
   <caption role="window-caption">Caption</caption>
-  <div#caption-expand>
-      <labels#tumblr-nav>
-          <label>Tumblr</label>
-          <label>X</label>
-      </labels>
-    </div>
+  <div#caption-expand></div>
   <window-button #window-debug>s</window-button>
   <window-button #window-menu>6</window-button>
   <window-button #window-min role="window-minimize">0</window-button>

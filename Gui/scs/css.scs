@@ -2,7 +2,7 @@
 widget#widget{
     position: relative;
 }
-aside{
+aside#widget-aside{
     position: absolute;
     top: 0;
     left: 0;
@@ -20,7 +20,7 @@ aside2:hover #sites-nav{
     padding: 0.5em;
     /*border-spacing:0.5em;*/
 }
-main{
+main#widget-main{
     size: *;
     margin-left: 40dip;
 }
@@ -127,13 +127,14 @@ main{
     box-shadow: inset 1px 1px 3px -1px rgba(0, 0, 0, .3);
     height: 24px;
     width: @HEADER-HEIGHT;
-    border-radius: 5dip;
+    border-radius: 5%;
     overflow: hidden;
-    transition: width(cubic-out, 0.5s, none);
+    transition: border-radius(cubic-out, 0.5s, none);
 }
 /*----------------------------------*/
 #tumblr-nav label:current{
-    width: 3.2em;
+    /*width: 3.2em;*/
+    border-radius: 50%;
 }
 #tumblr panels#tumblr-tabs{
     flow: stack;
@@ -190,12 +191,78 @@ panels#tumblr-tabs > panel:animating {
     padding: 5dip;
     background: @light_gray;
 }
-#tumblr .list{
-    /*prototype: listHover url("../tis/list-hover.tis");*/
+aside#tumblr-aside{
     width: 80dip;
     height: *;
-    border-left: 1px @BORDERCOLOR solid;
-    padding: 0.8em;
+    /*border-left: 1px @BORDERCOLOR solid;*/
+    padding: 6dip;
+}
+#tumblr-user{
+    width: *;
+    height: width(100%);
+    padding: 6dip 6dip 12dip 6dip;
+    border-bottom: 1px @BORDERCOLOR solid;
+    position: relative;
+}
+#user-avatar{
+    width: *;
+    height: width(100%);
+    border-radius: 50%;
+    overflow: hidden;
+    background: url(d:/Project/GitHub/Tumblr4/imgTemp/163751837940[1]_250.jpg) no-repeat center center;
+    background-size: contain;
+    border: 2dip @BORDERCOLOR solid;
+}
+#user-panel{
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    left: -6dip;
+    width: 300dip;
+    /*height: 300dip;*/
+    background: rgba(0,0,0,.5);
+    /*transform: translate(-100%,0);*/
+    transform-origin:top top;
+    transform: translate(0,0) scale(0,0);
+    border-spacing: 10dip;
+    overflow: hidden;
+    border-radius: 10dip 0 10dip 10dip;
+}
+#tumblr-nav{
+    width: 300dip;
+    height: max-content;
+    padding: 20dip;
+    /*border-spacing: 10dip;*/
+    overflow: hidden;
+    flow:vertical;
+}
+#tumblr-nav .tumblr-nav-group{
+    flow: horizontal;
+    width: *;
+    height: max-content;
+    border-spacing: 10dip;
+}
+#tumblr-nav label{
+    width: 50dip;
+    height: width(100%);
+    background: #ffffff;
+    border-radius: 5dip;
+    box-shadow: 1px 2px 5px -1px rgba(0, 0, 0, .3);
+    overflow: hidden;
+}
+#tumblr-user:hover #user-panel{
+    hit-margin:12dip;
+    /*width: 300dip;*/
+    opacity: 1;
+    transform: translate(-100%,0) scale(1,1);
+    transition: transform(cubic-out,0.2s) opacity(cubic-out,0.2s);
+}
+#tumblr .list{
+    /*prototype: listHover url("../tis/list-hover.tis");*/
+    width: *;
+    height: *;
+    /*border-left: 1px @BORDERCOLOR solid;*/
+    padding: 24dip 6dip 24dip 6dip;
     border-spacing:0.8em;
 }
 #tumblr .list li{
@@ -215,11 +282,11 @@ panels#tumblr-tabs > panel:animating {
 #tumblr .list li .li-popup{
     position: fixed;
     top: 5dip;
-    right: 110dip;
+    right: 98dip;
     bottom: 5dip;
     background: rgba(0,0,0,.5);
     /*background: gold;*/
-    /*transform: translate(-50%,-50%) scale(0,0);*/
+    /*transform: translate(0,0);*/
     width: 0;
     overflow: hidden;
     opacity: 0;
@@ -234,10 +301,10 @@ panels#tumblr-tabs > panel:animating {
 }
 
 #tumblr .list li.hover .li-popup{
-    hit-margin:0.8em;
+    hit-margin:12dip;
     width: 420dip;
     opacity: 1;
-    /*transform: translate(-100%,0) scale(1,1);*/
+    /*transform: translate(-100%,0);*/
     transition: width(cubic-out,0.2s) opacity(cubic-out,0.2s);
 }
 #tumblr .list li.loading{
