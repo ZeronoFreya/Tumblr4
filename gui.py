@@ -20,6 +20,8 @@ def queueLoop( _GuiRecvMsg, funCall ):
                 d = event.get('data_', '')
                 if d:
                     funCall('setImgId', d['id'], d['imgid'], d['preview'] )
+            elif event['type_'] == 'tumblr' and event['event_'] == 'setImgIdOver':
+                funCall('setImgIdOver')
             elif event['type_'] == 'tumblr' and event['event_'] == 'setImgBg':
                 d = event.get('data_', '')
                 if d:

@@ -7,11 +7,11 @@ class UlCtrl: Behavior {
         // this.subscribe(mousewheel, Event.MOUSE, Event.MOUSE_WHEEL);
         // this.subscribe("mousedown", onMouseDown);
 
-        this << event load-imglist (evt) {
-            while( this.scroll(#bottom) < 0 ){
-                view.getDashboards()
-            }
-        }
+        // this << event load-imglist (evt) {
+        //     while( this.scroll(#bottom) < 0 ){
+        //         view.getDashboards()
+        //     }
+        // }
         this.on("click","li",function(){
             var list = $(#tumblr .list);
             if ( list.$(li[imgid="{this.@#imgid}"]) ) return;
@@ -23,17 +23,15 @@ class UlCtrl: Behavior {
             return view.getPreviewSize( this.@#imgid, this.@#preview );
         })
     }
-    // function onScroll(evt)
-    // {
-    //   if( evt.type == Event.SCROLL_POS ){
-
-    //     if ( this.scroll(#bottom) < 200) {
-    //         // stdout.println("down",evt.scrollPos,this.scroll(#bottom));
-    //         // isLoad = false;
-    //         view.getDashboards()
-    //     }
-    //   }
-    // };
+    function onScroll(evt){
+      if( evt.type == Event.SCROLL_POS ){
+        if ( this.scroll(#bottom) < 200) {
+            // stdout.println("down",evt.scrollPos,this.scroll(#bottom));
+            // isLoad = false;
+            view.getDashboards()
+        }
+      }
+    };
     // function mousewheel(evt) {
     //     if (evt.wheelDelta < 0) {
     //         //下滚(滚轮向内滚动，放大)

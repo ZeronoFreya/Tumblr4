@@ -16,12 +16,12 @@ self.ready = function() {
     // }
     // ul.postEvent("is-scroll");
 
-    // $(#tumblr-login).on("click",function(){
-    //     $(.tumblr-homepage).@.addClass("tumblr-homepage-collapsed");
-    //     view.initTumblr();
-    //     // $(#ul).postEvent("load-imglist");
-    // })
-    
+    $(#tumblr-login).on("click",function(){
+        $(.tumblr-homepage).@.addClass("tumblr-homepage-collapsed");
+        view.initTumblr();
+        // $(#ul).postEvent("load-imglist");
+    })
+
     $(#window-menu).on("click",function(){
         view.getDashboards();
         // $(#ul).postEvent("load-imglist");
@@ -48,6 +48,11 @@ function setImgId( id, i, p ){
     }
     // li.@#imgid = id;
     // li.@.removeClass("loading");
+}
+function setImgIdOver(){
+    if ( $(#tumblr-view).scroll(#bottom) < 0 ) {
+        view.getDashboards();
+    }
 }
 function setImgBg( id, path ){
     // stdout.println(id, path);

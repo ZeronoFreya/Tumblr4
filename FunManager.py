@@ -88,12 +88,16 @@ class TumblrFun:
 
     def getDashboards(self, data_=None):
         print('getDashboards')
-        self.__ImgPretreatment()
+        imgid_list = self.__ImgPretreatment()
         limit = int( self.cfg['dashboard_param']['limit'] )
         # # print( len( self.imgList ), limit)
         if len( self.imgList ) < limit:
             self.getImgList()
-        self.setImgList(limit)
+        self.setImgList(imgid_list)
+        self.GuiRecvMsg.put({
+            'type_' : 'tumblr',
+            'event_' : 'setImgIdOver'
+        })
 
     def getPreviewSize(self, d):
         '''获取预览大图'''
@@ -155,11 +159,12 @@ class TumblrFun:
             self.imgList.append( d )
         # # print(self.imgList)
 
-    def setImgList(self, limit):
+    def setImgList(self, imgid_list):
         print('setImgList')
-        i = 0
+        # i = 0
         imgDict = []
-        while i < limit:
+        # while i < limit:
+        for imgid in imgid_list:
             d = self.imgList.pop(0)
             # # print(d)
             self.GuiRecvMsg.put({
@@ -167,7 +172,7 @@ class TumblrFun:
                 'event_' : 'setImgId',
                 'data_' : {
                     'id': d['id'],
-                    'imgid': str(i),
+                    'imgid': imgid,
                     'preview': d['preview_size']
                 }
             })
@@ -185,18 +190,6 @@ class TumblrFun:
                 'data_' : {'id':d['id'],'module':'"'.join(('#tumblr .view li[imgid=',d['id'],']'))}
             }
             if not osPath.isfile(file_path):
-                # # print('准备下载',d['id'])
-                # imgDict.append({
-                #     'id': d['id'],
-                #     'http': d['alt_sizes'],
-                #     'fpath': file_path
-                # })
-                # task = asyncio.ensure_future(stream_download({
-                #     'id': d['id'],
-                #     'http': d['alt_sizes'],
-                #     'fpath': file_path
-                # }, self.proxies))
-                # task.add_done_callback(callback)
                 asyncio.run_coroutine_threadsafe(stream_download(
                     {'id': d['id'],'http': d['alt_sizes'],'fpath': file_path},
                     self.proxies,
@@ -204,20 +197,18 @@ class TumblrFun:
                     _GuiRecvMsgDict,
                     _Timeout
                 ), self.new_loop)
-                # task.add_done_callback(callback)
             else:
-                # # print('存在',d['id'])
+                # print('存在',d['id'])
                 self.GuiRecvMsg.put(_GuiRecvMsgDict)
-            i += 1
-        # # print(imgDict)
-        # if imgDict:
-        #     asyncImgList( self.GuiRecvMsg, imgDict, self.proxies )
+            # i += 1
 
     def __ImgPretreatment(self):
         html = ''
         limit = self.cfg['dashboard_param']['limit']
         i = 0
+        imgid = []
         while i < limit:
+            imgid.append( str(i) )
             html += '<li.loading imgid="' + str(i) + '"></li>'
             i += 1
         self.GuiRecvMsg.put({
@@ -225,3 +216,4 @@ class TumblrFun:
             'event_' : 'appendImg',
             'data_' : html
         })
+        return imgid
