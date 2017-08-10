@@ -36,7 +36,10 @@ self.ready = function() {
 }
 function appendImgLoading( html ){
     if (html=="") return;
-    self.$(#tumblr .view).append(html);
+    self.$(#tumblr-view).append(html);
+    if ( $(#tumblr-view).scroll(#bottom) < 0 ) {
+        view.getDashboards();
+    }
 }
 function setImgId( id, i, p ){
     // stdout.println(id, i);
@@ -50,9 +53,9 @@ function setImgId( id, i, p ){
     // li.@.removeClass("loading");
 }
 function setImgIdOver(){
-    if ( $(#tumblr-view).scroll(#bottom) < 0 ) {
-        view.getDashboards();
-    }
+    // if ( $(#tumblr-view).scroll(#bottom) < 0 ) {
+    //     view.getDashboards();
+    // }
 }
 function setImgBg( id, path ){
     // stdout.println(id, path);

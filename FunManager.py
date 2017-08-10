@@ -2,6 +2,7 @@
 # import TumblrManager
 import aiohttp
 import asyncio
+from time import time
 from threading import Thread
 from os import path as osPath
 from tumblpy import Tumblpy
@@ -16,27 +17,33 @@ from common import gets
 async def stream_download( d, proxies, _GuiRecvMsg, _GuiRecvMsgDict, _Timeout ):
     '''协程下载列表中图片'''
     print('下载',d['id'])
-    for x in range(0, 3):
-        try:
-            with aiohttp.Timeout(10):
-                async with aiohttp.request( 'GET', d['http'], proxy=''.join(('http://', proxies)) ) as response:
-                # async with client.get( d['http'], proxy=''.join(('http://', proxies)), timeout=10 ) as response:
-                    if response.status != 200:
-                        print('error')
-                        return
-                    print('200',d['id'])
-                    with open(d['fpath'], 'ab') as file:
-                        while True:
-                            chunk = await response.content.read(1024)
-                            if not chunk:
-                                break
-                            file.write(chunk)
-            _GuiRecvMsg.put(_GuiRecvMsgDict)
-            return
-        except asyncio.TimeoutError:
-
-            continue
-    _GuiRecvMsg.put(_Timeout)
+    # for x in range(0, 3):
+    err = ''
+    try:
+        with aiohttp.Timeout(10):
+            async with aiohttp.request( 'GET', d['http'], proxy=''.join(('http://', proxies)) ) as response:
+            # async with client.get( d['http'], proxy=''.join(('http://', proxies)), timeout=10 ) as response:
+                if response.status != 200:
+                    print('error')
+                    _GuiRecvMsg.put(_Timeout)
+                    err = 'not 200'
+                    return
+                print('200',d['id'])
+                with open(d['fpath'], 'ab') as file:
+                    while True:
+                        chunk = await response.content.read(1024)
+                        if not chunk:
+                            break
+                        file.write(chunk)
+        _GuiRecvMsg.put(_GuiRecvMsgDict)
+        err = 'no'
+        return
+    except asyncio.TimeoutError:
+        # continue
+        _GuiRecvMsg.put(_Timeout)
+        err = 'timeout'
+    # finally:
+    #     print(err, d['id'])
 
 class TumblrFun:
     """docstring for ClassName"""
@@ -47,8 +54,10 @@ class TumblrFun:
         self.proxies = proxies
         self.imgTemp = imgTemp
         self.imgList = []
+        self.working = 0
 
     def start_loop(self, loop):
+        # self.sem = asyncio.Semaphore(30)
         asyncio.set_event_loop(loop)
         loop.run_forever()
 
@@ -88,16 +97,22 @@ class TumblrFun:
 
     def getDashboards(self, data_=None):
         print('getDashboards')
+        if self.working:
+            return
+        self.working = 1
         imgid_list = self.__ImgPretreatment()
         limit = int( self.cfg['dashboard_param']['limit'] )
         # # print( len( self.imgList ), limit)
         if len( self.imgList ) < limit:
             self.getImgList()
         self.setImgList(imgid_list)
-        self.GuiRecvMsg.put({
-            'type_' : 'tumblr',
-            'event_' : 'setImgIdOver'
-        })
+        # self.GuiRecvMsg.put({
+        #     'type_' : 'tumblr',
+        #     'event_' : 'setImgIdOver'
+        # })
+        self.working = 0
+        if len( self.imgList ) < limit*2:
+            self.getImgList()
 
     def getPreviewSize(self, d):
         '''获取预览大图'''
@@ -198,19 +213,21 @@ class TumblrFun:
                     _Timeout
                 ), self.new_loop)
             else:
-                # print('存在',d['id'])
                 self.GuiRecvMsg.put(_GuiRecvMsgDict)
             # i += 1
 
     def __ImgPretreatment(self):
         html = ''
         limit = self.cfg['dashboard_param']['limit']
-        i = 0
+        # i = 0
         imgid = []
-        while i < limit:
-            imgid.append( str(i) )
-            html += '<li.loading imgid="' + str(i) + '"></li>'
-            i += 1
+        time_now = ''
+        # while i < limit:
+        for i in range(0, limit):
+            time_now = '-'.join( ( str(i), str(time()) ) )
+            imgid.append( time_now )
+            html += '<li.loading imgid=%s></li>' % ( time_now )
+            # i += 1
         self.GuiRecvMsg.put({
             'type_' : 'tumblr',
             'event_' : 'appendImg',
