@@ -17,7 +17,8 @@ class MainForm(object):
             'tumblr':{
                 'initTumblr':tumblrFun.initTumblr,
                 'getDashboards':tumblrFun.getDashboards,
-                'getPreviewSize':tumblrFun.getPreviewSize
+                'getPreviewSize':tumblrFun.getPreviewSize,
+                'refreshTimeoutImg':tumblrFun.refreshTimeoutImg
             }
         }
 

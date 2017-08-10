@@ -33,7 +33,7 @@ def queueLoop( _GuiRecvMsg, funCall ):
             elif event['type_'] == 'tumblr' and event['event_'] == 'timeout':
                 d = event.get('data_', '')
                 if d:
-                    funCall('timeout', d['id'], d['module'] )
+                    funCall('timeout', d['id'], d['http'], d['module'] )
         except Exception as e:
             pass
 
@@ -101,6 +101,16 @@ class Frame(sciter.Window):
             'data_' : {
                 'id': str(id).strip('"'),
                 'preview_size' : str(preview).strip('"')
+            }
+        })
+
+    def refreshTimeoutImg(self, id, thumbnails):
+        self.CtrlRecvMsg.put({
+            'type_' : 'tumblr',
+            'event_' : 'refreshTimeoutImg',
+            'data_' : {
+                'id': str(id).strip('"'),
+                'alt_size' : str(thumbnails).strip('"')
             }
         })
 

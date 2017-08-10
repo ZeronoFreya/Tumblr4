@@ -56,6 +56,8 @@ function setImgIdOver(){
     // if ( $(#tumblr-view).scroll(#bottom) < 0 ) {
     //     view.getDashboards();
     // }
+    $(#tumblr-view).@#loading = 0;
+    $(#status-bar).text = "loading-end";
 }
 function setImgBg( id, path ){
     // stdout.println(id, path);
@@ -76,10 +78,11 @@ function setPreview( id, path ){
         li.@.removeClass("loading");
     }
 }
-function timeout( id, module ){
+function timeout( id, http, module ){
     // alert(module);
     var li = $({module});
     if (li) {
-        li.@.addClass("timeout");
+        li.@.addClass("timeout").@.removeClass("loading");
+        li.@#thumbnails = http;
     }
 }

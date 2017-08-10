@@ -97,22 +97,41 @@ class TumblrFun:
 
     def getDashboards(self, data_=None):
         print('getDashboards')
-        if self.working:
-            return
-        self.working = 1
         imgid_list = self.__ImgPretreatment()
         limit = int( self.cfg['dashboard_param']['limit'] )
         # # print( len( self.imgList ), limit)
         if len( self.imgList ) < limit:
             self.getImgList()
         self.setImgList(imgid_list)
-        # self.GuiRecvMsg.put({
-        #     'type_' : 'tumblr',
-        #     'event_' : 'setImgIdOver'
-        # })
-        self.working = 0
+        self.GuiRecvMsg.put({
+            'type_' : 'tumblr',
+            'event_' : 'setImgIdOver'
+        })
         if len( self.imgList ) < limit*2:
             self.getImgList()
+
+    def refreshTimeoutImg(self, d):
+        '''刷新加载失败的缩略图'''
+        print('refreshTimeoutImg')
+        file_name = d['id'] + '_' + d['alt_size'].split("_")[-1]
+        file_path = osPath.join( self.imgTemp, file_name )
+        _GuiRecvMsgDict = {
+            'type_' : 'tumblr',
+            'event_' : 'setImgBg',
+            'data_' : {'id':d['id'],'fpath':file_path}
+        }
+        _Timeout = {
+            'type_' : 'tumblr',
+            'event_' : 'timeout',
+            'data_' : {'id':d['id'],'http':d['alt_size'],'module':'"'.join(('#tumblr .view li[imgid=',d['id'],']'))}
+        }
+        asyncio.run_coroutine_threadsafe(stream_download(
+            {'id': d['id'],'http': d['alt_size'],'fpath': file_path},
+            self.proxies,
+            self.GuiRecvMsg,
+            _GuiRecvMsgDict,
+            _Timeout
+        ), self.new_loop)
 
     def getPreviewSize(self, d):
         '''获取预览大图'''
@@ -127,7 +146,7 @@ class TumblrFun:
         _Timeout = {
             'type_' : 'tumblr',
             'event_' : 'timeout',
-            'data_' : {'id':d['id'],'module':'"'.join(('#tumblr .list li[imgid=',d['id'],']'))}
+            'data_' : {'id':d['id'],'http':d['preview_size'],'module':'"'.join(('#tumblr .list li[imgid=',d['id'],']'))}
         }
         if not osPath.isfile(file_path):
             asyncio.run_coroutine_threadsafe(stream_download(
@@ -152,8 +171,8 @@ class TumblrFun:
         #     raise 'not dashboard'
         #     return
         try:
-            # dashboard = self.tumblr.dashboard( p )
-            dashboard = self.tumblr.posts('kuvshinov-ilya.tumblr.com', None, p)
+            dashboard = self.tumblr.dashboard( p )
+            # dashboard = self.tumblr.posts('kuvshinov-ilya.tumblr.com', None, p)
             # # print('dashboard',dashboard)
         except Exception as e:
             print('err dashboard')
@@ -202,7 +221,7 @@ class TumblrFun:
             _Timeout = {
                 'type_' : 'tumblr',
                 'event_' : 'timeout',
-                'data_' : {'id':d['id'],'module':'"'.join(('#tumblr .view li[imgid=',d['id'],']'))}
+                'data_' : {'id':d['id'],'http':d['alt_sizes'],'module':'"'.join(('#tumblr .view li[imgid=',d['id'],']'))}
             }
             if not osPath.isfile(file_path):
                 asyncio.run_coroutine_threadsafe(stream_download(
