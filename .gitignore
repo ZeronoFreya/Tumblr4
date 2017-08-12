@@ -140,5 +140,6 @@ $RECYCLE.BIN/
 
 download/
 imgTemp/
+imgSave/
 tumblr_credentials.json
 data.json

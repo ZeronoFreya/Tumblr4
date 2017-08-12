@@ -1,8 +1,12 @@
 class listHover: Behavior {
-    var panelW, panelH;
+    // var panelW, panelH;
     function attached() {
         // this.subscribe(mouseEventMonitor, "li", Event.MOUSE);
-        (panelW, panelH) = $(#sites-panel).box(#dimension, #border, #view);
+        // (panelW, panelH) = $(#sites-panel).box(#dimension, #border, #view);
+        this.on("click",function(){
+            stdout.println(this.@#download);
+            view.downloadImg(this.@#imgid, this.@#download);
+        })
     }
     function onMouse(evt){
         switch(evt.type) {

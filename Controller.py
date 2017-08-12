@@ -12,19 +12,21 @@ class MainForm(object):
         self.CtrlRecvMsg = _CtrlRecvMsg
 
     def __initFunMap(self):
-        tumblrFun = TumblrFun( self.cfg['tumblr'], self.GuiRecvMsg, self.cfg['proxies'], self.cfg['imgTemp'] )
+        tumblrFun = TumblrFun( self.cfg['tumblr'], self.GuiRecvMsg, self.cfg['proxies'], self.cfg['imgTemp'], self.cfg['imgSave'] )
         return {
             'tumblr':{
                 'initTumblr':tumblrFun.initTumblr,
                 'getDashboards':tumblrFun.getDashboards,
                 'getPreviewSize':tumblrFun.getPreviewSize,
-                'refreshTimeoutImg':tumblrFun.refreshTimeoutImg
+                'refreshTimeoutImg':tumblrFun.refreshTimeoutImg,
+                'downloadImg':tumblrFun.downloadImg
             }
         }
 
     def run_app(self):
         funMap = self.__initFunMap()
-        return EventManager( self.CtrlRecvMsg, funMap ).Start()
+        handlers = ['tumblr', 'sys']
+        return EventManager( self.CtrlRecvMsg, handlers, funMap ).Start()
 
 def run_app( cfg, _GuiRecvMsg, _CtrlRecvMsg ):
     main = MainForm( cfg, _GuiRecvMsg, _CtrlRecvMsg )

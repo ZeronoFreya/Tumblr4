@@ -1,4 +1,7 @@
 ﻿include "common.tis";
+namespace selects {
+    var statusBar;
+}
 self.ready = function() {
     //设置窗口居中
     // setWinToCenter(1480);
@@ -15,6 +18,7 @@ self.ready = function() {
     //     ul.$append(<li>{i}</li>);
     // }
     // ul.postEvent("is-scroll");
+    selects.statusBar = $(#status-bar);
 
     $(#tumblr-login).on("click",function(){
         $(.tumblr-homepage).@.addClass("tumblr-homepage-collapsed");
@@ -22,10 +26,10 @@ self.ready = function() {
         // $(#ul).postEvent("load-imglist");
     })
 
-    $(#window-menu).on("click",function(){
-        view.getDashboards();
-        // $(#ul).postEvent("load-imglist");
-    })
+    // $(#window-menu).on("click",function(){
+    //     view.getDashboards();
+    //     // $(#ul).postEvent("load-imglist");
+    // })
     // $(li[imgid="163313406078[1]"]).text = "1234";
     // $(aside).state.expanded = true;
     // $(labels#sites-nav).on("click","label",function(){
@@ -41,13 +45,15 @@ function appendImgLoading( html ){
         view.getDashboards();
     }
 }
-function setImgId( id, i, p ){
+function setImgId( id, i, p, dl ){
     // stdout.println(id, i);
     var li = $(li.loading[imgid="{i}"]);
     if(li){
         li.@#imgid = id;
         li.@#preview = p;
-        li.text = id;
+        li.@#download = dl;
+        // li.text = id;
+        li.$(.li-footer).text = id;
     }
     // li.@#imgid = id;
     // li.@.removeClass("loading");
@@ -64,7 +70,7 @@ function setImgBg( id, path ){
     var li = $(li[imgid="{id}"]);
     // stdout.println(li);
     if(li){
-        li.text = id;
+        // li.text = id;
         li.post( ::this.style#background-image = "url(" + path + ")" );
         li.@.removeClass("loading");
     }
@@ -77,6 +83,12 @@ function setPreview( id, path ){
         li.$(div.img).post( ::this.style#background-image = "url(" + path + ")" );
         li.@.removeClass("loading");
     }
+}
+function downloaded( id, path ){
+    stdout.println("已下载",id);
+}
+function statusInfo( text ){
+     selects.statusBar.text = text;
 }
 function timeout( id, http, module ){
     // alert(module);

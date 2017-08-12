@@ -1,10 +1,10 @@
 class UlCtrl: Behavior {
-    var _this;
-    var isLoad = true;
-    var listTemplate = "<li.loading imgid='%s' style='background-image: url(%s)'><div.li-popup><div.img></div></div></li>";
+    var liHeight = 0;
+    var responsePosY = 0;
+    var listTemplate = "<li.loading imgid=%s download='%s' style='background-image: url(%s)'><div.li-popup><div.img></div></div></li>";
     function attached() {
-        _this = this;
         this.@#loading = 0;
+        this.height = this.box(#height, #border, #view);
         // this.subscribe(mousewheel, Event.MOUSE, Event.MOUSE_WHEEL);
         // this.subscribe("mousedown", onMouseDown);
 
@@ -13,6 +13,7 @@ class UlCtrl: Behavior {
         //         view.getDashboards()
         //     }
         // }
+
         this.on("click","li",function(){
             if ( this.@.hasClass("timeout") ) {
                 this.@.addClass("loading").@.removeClass("timeout");
@@ -23,6 +24,7 @@ class UlCtrl: Behavior {
             list.append(String.printf(
                 listTemplate,
                 this.@#imgid,
+                this.@#download,
                 this.style#background-image
             ));
             return view.getPreviewSize( this.@#imgid, this.@#preview );
@@ -30,11 +32,12 @@ class UlCtrl: Behavior {
     }
     function onScroll(evt){
       if( evt.type == Event.SCROLL_POS ){
-        if ( this.scroll(#bottom) < 200 && this.@#loading == 0 ) {
+        liHeight = liHeight || this.$(li:last-child).box(#height, #border, #self)*2;
+        responsePosY = this.$(li:last-child).box(#top, #border, #parent) - liHeight;
+
+        if (responsePosY < this.height && this.@#loading == 0 ) {
             this.@#loading = 1
             $(#status-bar).text = "loading";
-            // stdout.println("down",evt.scrollPos,this.scroll(#bottom));
-            // isLoad = false;
             view.getDashboards()
         }
       }

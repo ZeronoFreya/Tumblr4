@@ -97,13 +97,85 @@ main#widget-main{
     position: absolute;
     top: 0;
     right: 0;
-    width: 100%;
+    left: 0;
     bottom: 0;
-    /*background: gold;*/
+    /*width: 100%;
+    height: 100%;*/
+    background: @BGCOLOR-WHITE;
     overflow: hidden;
+    z-index: 999;
+    opacity: 1;
 }
 .tumblr-homepage-collapsed{
-    width: 0;
+    /*size: 92dip;*/
+    /*background: gold;*/
+    /*height: 80dip;*/
+    display: none;
+    opacity:0;
+    transform-origin:right top;
+    transform: scale(0,0);
+    /*transition: size(cubic-out,0.8s) opacity(cubic-out,0.8s,0.5s,none);*/
+    transition: transform(cubic-out,0.8s)
+                 opacity(cubic-out,0.8s,0.5s,none)
+                 display(cubic-out,0s,0.8s);
+}
+.login-contain{
+    width: 320dip;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    /*background: gold;*/
+    border: transparent;
+    flow: vertical;
+    border-spacing: 20dip;
+}
+.button-group,
+.input-group{
+    /*background: #ffffff;*/
+    /*size: max-content;*/
+    width: *;
+    height: 30dip;
+    border: none;
+    position: relative;
+    color: @FONTCOLOR-DARK;
+}
+
+.input-group input{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border: none;
+    font-size: 12pt;
+    color: @FONTCOLOR-DARK;
+    /*text-indent: 10dip;*/
+    padding: 5dip 10dip 5dip 10dip;
+    background: transparent;
+    border-bottom: 1px @BORDERCOLOR solid;
+}
+.input-group input:empty{
+    color: #999999;
+}
+.button-group{
+    flow:horizontal;
+    border-spacing: 30dip;
+    padding-top: 14dip;
+}
+.button-group button{
+    background: transparent;
+    display: block;
+    height: 28dip;
+    overflow: hidden;
+    color: @FONTCOLOR-DARK;
+    border-bottom: 1px @BORDERCOLOR solid;
+}
+.login-btn{
+    width: *;
+}
+.sign-up-btn{
+    width: 80dip;
 }
 #tumblr tabs.main{
     size:*;
@@ -198,12 +270,14 @@ aside#tumblr-aside{
     padding: 6dip;
 }
 #tumblr-user{
+    prototype: avatarHover url("../tis/avatar-hover.tis");
     width: *;
     height: width(100%);
     padding: 6dip 6dip 12dip 6dip;
     border-bottom: 1px @BORDERCOLOR solid;
     position: relative;
 }
+
 #user-avatar{
     width: *;
     height: width(100%);
@@ -214,7 +288,7 @@ aside#tumblr-aside{
     border: 2dip @BORDERCOLOR solid;
 }
 #user-panel{
-    opacity: 0;
+    opacity: 0.0;
     position: absolute;
     top: 0;
     left: -6dip;
@@ -227,6 +301,7 @@ aside#tumblr-aside{
     border-spacing: 10dip;
     overflow: hidden;
     border-radius: 10dip 0 10dip 10dip;
+    z-index: 9;
 }
 #tumblr-nav{
     width: 300dip;
@@ -250,10 +325,10 @@ aside#tumblr-aside{
     box-shadow: 1px 2px 5px -1px rgba(0, 0, 0, .3);
     overflow: hidden;
 }
-#tumblr-user:hover #user-panel{
+#tumblr-user.hover #user-panel{
     hit-margin:12dip;
-    /*width: 300dip;*/
-    opacity: 1;
+    width: 300dip;
+    opacity: 1.0;
     transform: translate(-100%,0) scale(1,1);
     transition: transform(cubic-out,0.2s) opacity(cubic-out,0.2s);
 }
@@ -276,6 +351,8 @@ aside#tumblr-aside{
     background-size: contain;
     background-color: #ffffff;
     position: relative;
+    foreground:transition;
+    foreground-size: auto;
     /*click!: self.showPreview(true);*/
     /*hover-on!: self:value=1;*/
 }
@@ -299,7 +376,9 @@ aside#tumblr-aside{
     @LI-BACKGROUND;
     background-size: contain;
 }
-
+#tumblr .list li.hover{
+    foreground:rgba(250,250,250,.6) url(../img/timeout.png) no-repeat center center;
+}
 #tumblr .list li.hover .li-popup{
     hit-margin:12dip;
     width: 420dip;

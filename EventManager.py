@@ -1,8 +1,8 @@
 class EventManager:
-    def __init__(self, _CtrlRecvMsg, funMap):
+    def __init__(self, _CtrlRecvMsg, handlers, funMap):
         # 事件管理器开关
         self.__active = False
-        self.handlers = ['tumblr', 'sys']
+        self.handlers = handlers
         self.CtrlRecvMsg = _CtrlRecvMsg
         self.funMap = funMap
 

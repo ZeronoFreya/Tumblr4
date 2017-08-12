@@ -4,38 +4,59 @@ import ctypes
 # from win32con import WM_USER
 # from os import path as osPath, getcwd, mkdir as osMkdir
 from threading import Thread
+from EventManager import EventManager
 
 ctypes.windll.user32.SetProcessDPIAware(2)
 
+class GuiCallBack(object):
+    """docstring for ClassName"""
+    def __init__(self, funCall):
+        super(GuiCallBack, self).__init__()
+        self.funCall = funCall
+
+    def appendImg(self, d):
+        return self.funCall('appendImgLoading', d )
+
+    def setImgId(self, d):
+        return self.funCall('setImgId', d['id'], d['imgid'], d['preview'], d['download'] )
+    def setImgIdOver(self, d):
+        return self.funCall('setImgIdOver')
+    def setImgBg(self, d):
+        return self.funCall('setImgBg', d['id'], d['fpath'] )
+    def setPreview(self, d):
+        return self.funCall('setPreview', d['id'], d['fpath'] )
+    def downloaded(self, d):
+        return self.funCall('downloaded', d['id'], d['fpath'] )
+    def timeout(self, d):
+        return self.funCall('timeout', d['id'], d['http'], d['module'] )
+    def statusBar(self, d):
+        return self.funCall('statusInfo', d['text'] )
+
+
 def queueLoop( _GuiRecvMsg, funCall ):
-    while 1:
-        try:
-            # 获取事件的阻塞时间设为1秒
-            event = _GuiRecvMsg.get(timeout = 1)
-            if event['type_'] == 'sys' and event['event_'] == 'close_app':
-                break
-            if event['type_'] == 'tumblr' and event['event_'] == 'appendImg':
-                funCall('appendImgLoading', event.get('data_', '') )
-            elif event['type_'] == 'tumblr' and event['event_'] == 'setImgId':
-                d = event.get('data_', '')
-                if d:
-                    funCall('setImgId', d['id'], d['imgid'], d['preview'] )
-            elif event['type_'] == 'tumblr' and event['event_'] == 'setImgIdOver':
-                funCall('setImgIdOver')
-            elif event['type_'] == 'tumblr' and event['event_'] == 'setImgBg':
-                d = event.get('data_', '')
-                if d:
-                    funCall('setImgBg', d['id'], d['fpath'] )
-            elif event['type_'] == 'tumblr' and event['event_'] == 'setPreview':
-                d = event.get('data_', '')
-                if d:
-                    funCall('setPreview', d['id'], d['fpath'] )
-            elif event['type_'] == 'tumblr' and event['event_'] == 'timeout':
-                d = event.get('data_', '')
-                if d:
-                    funCall('timeout', d['id'], d['http'], d['module'] )
-        except Exception as e:
-            pass
+    guiCallBack = GuiCallBack( funCall )
+    # _EventListenerMap
+    _ELM = {
+        'tumblr':[
+            'appendImg',
+            'setImgId',
+            'setImgIdOver',
+            'setImgBg',
+            'setPreview',
+            'downloaded',
+            'timeout',
+            'statusBar',
+        ]
+    }
+    funMap = {}
+    for k in _ELM:
+        funMap[k] = {}
+        for v in _ELM[k]:
+            funMap[k][v] = getattr(guiCallBack, v)
+
+    handlers = ['tumblr', 'sys']
+    EventManager( _GuiRecvMsg, handlers, funMap ).Start()
+
 
 class Frame(sciter.Window):
 
@@ -101,6 +122,16 @@ class Frame(sciter.Window):
             'data_' : {
                 'id': str(id).strip('"'),
                 'preview_size' : str(preview).strip('"')
+            }
+        })
+
+    def downloadImg(self, id, download):
+        self.CtrlRecvMsg.put({
+            'type_' : 'tumblr',
+            'event_' : 'downloadImg',
+            'data_' : {
+                'id': str(id).strip('"'),
+                'download' : str(download).strip('"')
             }
         })
 
