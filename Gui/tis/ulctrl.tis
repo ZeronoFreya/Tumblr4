@@ -1,7 +1,7 @@
 class UlCtrl: Behavior {
     var liHeight = 0;
     var responsePosY = 0;
-    var listTemplate = "<li.loading imgid=%s download='%s' style='background-image: url(%s)'><div.li-popup><div.img></div></div></li>";
+    var listTemplate = "<li.loading imgid=%s preview='%s' download='%s' style='background-image: url(%s)'><i></i><div.li-popup><div.img></div></div></li>";
     function attached() {
         this.@#loading = 0;
         this.height = this.box(#height, #border, #view);
@@ -24,10 +24,11 @@ class UlCtrl: Behavior {
             list.append(String.printf(
                 listTemplate,
                 this.@#imgid,
+                this.@#preview,
                 this.@#download,
                 this.style#background-image
             ));
-            return view.getPreviewSize( this.@#imgid, this.@#preview );
+            return view.getPreviewSize( this.@#imgid, this.@#preview, this.@#download );
         })
     }
     function onScroll(evt){

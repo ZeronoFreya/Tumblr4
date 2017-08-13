@@ -4,8 +4,14 @@ class listHover: Behavior {
         // this.subscribe(mouseEventMonitor, "li", Event.MOUSE);
         // (panelW, panelH) = $(#sites-panel).box(#dimension, #border, #view);
         this.on("click",function(){
-            stdout.println(this.@#download);
-            view.downloadImg(this.@#imgid, this.@#download);
+            if (this.@.hasClass("download")) return;
+            // stdout.println(this.@#download);
+            this.@.addClass("loading");
+            if (this.@.hasClass("timeout")){
+                view.getPreviewSize( this.@#imgid, this.@#preview );
+            }else{
+                view.downloadImg(this.@#imgid, this.@#download);
+            }
         })
     }
     function onMouse(evt){

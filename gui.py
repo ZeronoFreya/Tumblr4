@@ -11,51 +11,50 @@ ctypes.windll.user32.SetProcessDPIAware(2)
 class GuiCallBack(object):
     """docstring for ClassName"""
     def __init__(self, funCall):
-        super(GuiCallBack, self).__init__()
         self.funCall = funCall
 
-    def appendImg(self, d):
+    def tumblr__appendImg(self, d):
         return self.funCall('appendImgLoading', d )
 
-    def setImgId(self, d):
+    def tumblr__setImgId(self, d):
         return self.funCall('setImgId', d['id'], d['imgid'], d['preview'], d['download'] )
-    def setImgIdOver(self, d):
+    def tumblr__setImgIdOver(self, d):
         return self.funCall('setImgIdOver')
-    def setImgBg(self, d):
+    def tumblr__setImgBg(self, d):
         return self.funCall('setImgBg', d['id'], d['fpath'] )
-    def setPreview(self, d):
+    def tumblr__setPreview(self, d):
         return self.funCall('setPreview', d['id'], d['fpath'] )
-    def downloaded(self, d):
-        return self.funCall('downloaded', d['id'], d['fpath'] )
-    def timeout(self, d):
+    def tumblr__downloaded(self, d):
+        return self.funCall('downloaded', d['id'], d['fpath'], d['module'])
+    def tumblr__timeout(self, d):
         return self.funCall('timeout', d['id'], d['http'], d['module'] )
-    def statusBar(self, d):
+    def tumblr__statusBar(self, d):
         return self.funCall('statusInfo', d['text'] )
 
 
 def queueLoop( _GuiRecvMsg, funCall ):
     guiCallBack = GuiCallBack( funCall )
     # _EventListenerMap
-    _ELM = {
-        'tumblr':[
-            'appendImg',
-            'setImgId',
-            'setImgIdOver',
-            'setImgBg',
-            'setPreview',
-            'downloaded',
-            'timeout',
-            'statusBar',
-        ]
-    }
-    funMap = {}
-    for k in _ELM:
-        funMap[k] = {}
-        for v in _ELM[k]:
-            funMap[k][v] = getattr(guiCallBack, v)
+    # _ELM = {
+    #     'tumblr':[
+    #         'tumblr__appendImg',
+    #         'tumblr__setImgId',
+    #         'tumblr__setImgIdOver',
+    #         'tumblr__setImgBg',
+    #         'tumblr__setPreview',
+    #         'downloaded',
+    #         'timeout',
+    #         'statusBar',
+    #     ]
+    # }
+    # funMap = {}
+    # for k in _ELM:
+    #     funMap[k] = {}
+    #     for v in _ELM[k]:
+    #         funMap[k][v] = getattr(guiCallBack, v)
 
     handlers = ['tumblr', 'sys']
-    EventManager( _GuiRecvMsg, handlers, funMap ).Start()
+    EventManager( _GuiRecvMsg, handlers, guiCallBack ).Start()
 
 
 class Frame(sciter.Window):
@@ -100,7 +99,7 @@ class Frame(sciter.Window):
         # })
         self.CtrlRecvMsg.put({
             'type_' : 'tumblr',
-            'event_' : 'initTumblr'
+            'event_' : 'init'
         })
         # self.tumblrCtrl = TumblrCtrl({
         #     'call'          : self.call_function,
@@ -115,13 +114,14 @@ class Frame(sciter.Window):
             'type_' : 'tumblr',
             'event_' : 'getDashboards'
         })
-    def getPreviewSize(self, id, preview):
+    def getPreviewSize(self, id, preview, download):
         self.CtrlRecvMsg.put({
             'type_' : 'tumblr',
             'event_' : 'getPreviewSize',
             'data_' : {
                 'id': str(id).strip('"'),
-                'preview_size' : str(preview).strip('"')
+                'preview_size' : str(preview).strip('"'),
+                'original_size' : str(download).strip('"')
             }
         })
 

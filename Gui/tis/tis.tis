@@ -82,10 +82,24 @@ function setPreview( id, path ){
         // li.$(img).post(::this.@#src = path);
         li.$(div.img).post( ::this.style#background-image = "url(" + path + ")" );
         li.@.removeClass("loading");
+        stdout.println("0",path);
+        if ( path.indexOf("imgSave") ) {
+            stdout.println("1",path);
+            li.@.addClass("download");
+        }
     }
 }
-function downloaded( id, path ){
-    stdout.println("已下载",id);
+function downloaded( id, path, module ){
+    // stdout.println("已下载",id);
+    // var li = $({module});
+    var li = $(#tumblr .list li[imgid="{id}"]);
+    if (li) {
+        li.@.addClass("download").@.removeClass("loading");
+        li.$(div.img).post( ::this.style#background-image = "url(" + path + ")" );
+        // li.@#class = "download";
+
+        // li.@#thumbnails = http;
+    }
 }
 function statusInfo( text ){
      selects.statusBar.text = text;

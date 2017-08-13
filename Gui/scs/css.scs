@@ -254,7 +254,7 @@ panels#tumblr-tabs > panel:animating {
     flow: horizontal-wrap;
     border-spacing: 10dip;
     size: *;
-    overflow: hidden;
+    /*overflow: hidden;*/
     overflow-y: scroll-indicator;
     /*overflow-y: scroll;*/
     /*overflow-y: scroll scroll-manner(wheel-animation:false, wheel-step:@list-h);*/
@@ -339,6 +339,7 @@ aside#tumblr-aside{
     /*border-left: 1px @BORDERCOLOR solid;*/
     padding: 24dip 6dip 24dip 6dip;
     border-spacing:0.8em;
+    overflow-y: scroll-indicator;
 }
 #tumblr .list li{
     prototype: listHover url("../tis/list-hover.tis");
@@ -370,15 +371,18 @@ aside#tumblr-aside{
     /*border-radius: 50% 5% 50% 50%;*/
     /*box-shadow: inset 1px 2px 5px -1px rgba(0, 0, 0, .3);*/
 }
-#tumblr .list li .li-popup > div{
+#tumblr .list li .li-popup > div.img{
     size: *;
     margin: 10dip;
     @LI-BACKGROUND;
     background-size: contain;
 }
-#tumblr .list li.hover{
-    foreground:rgba(250,250,250,.6) url(../img/timeout.png) no-repeat center center;
+#tumblr .list li .li-popup > div.img:hover{
+    background-size:auto;
 }
+/*#tumblr .list li.hover{
+    foreground:rgba(250,250,250,.6) url(../img/timeout.png) no-repeat center center;
+}*/
 #tumblr .list li.hover .li-popup{
     hit-margin:12dip;
     width: 420dip;
@@ -386,13 +390,33 @@ aside#tumblr-aside{
     /*transform: translate(-100%,0);*/
     transition: width(cubic-out,0.2s) opacity(cubic-out,0.2s);
 }
-#tumblr .list li.loading{
-    foreground:rgba(250,250,250,.6) url(../img/loading.png) no-repeat center center;
-    foreground-size: auto;
+#tumblr .list li i{
+    opacity: 0;
+    @LI-BACKGROUND;
+    display: block;
+    size:*;
+    background-color: rgba(250,250,250,.6);
+    background-size: auto;
 }
-#tumblr .list li.timeout{
-    foreground:rgba(250,250,250,.6) url(../img/timeout.png) no-repeat center center;
-    foreground-size: auto;
+#tumblr .list li.hover i{
+    opacity:1;
+    background-image: url(../img/download.png);
+    transition: opacity(cubic-out,0.2s);
+}
+#tumblr .list li.loading i{
+    opacity:1;
+    background-image: url(../img/loading.png);
+    transition: opacity(cubic-out,0.2s);
+}
+#tumblr .list li.timeout i{
+    opacity:1;
+    background-image: url(../img/timeout.png);
+    transition: opacity(cubic-out,0.2s);
+}
+#tumblr .list li.download i{
+    opacity:1;
+    background-image: url(../img/downloaded.png);
+    transition: opacity(cubic-out,0.2s);
 }
 #tumblr .view li {
     /*prototype: loadImageToLi url("loadimagetoli.tis");*/
